@@ -14,5 +14,5 @@ makeCensusUrbanAreas(cities, con, updateID)
 \item{updateID}{Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.}
 }
 \description{
-Make the CENSUS_URBAN_AREAS table
+This function returns a data frame, the CENSUS_URBAN_AREAS table of the database.
 }

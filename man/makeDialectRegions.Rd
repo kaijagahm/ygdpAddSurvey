@@ -12,5 +12,5 @@ makeDialectRegions(cities, updateID)
 \item{updateID}{Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.}
 }
 \description{
-Make the DIALECT_REGIONS table
+Function to create the DIALECT_REGIONS database table.
 }

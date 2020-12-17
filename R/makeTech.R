@@ -1,10 +1,9 @@
 #' Make the TECH table
-#' @export
-#' @import dplyr
 #'
 #' This function creates the TECH database table from raw survey data.
 #' @param df Raw survey data as a data frame. Must have columns 'responseID', 'consent', and 'completionCode'.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 makeTech <- function(df, updateID){
   # check for essential columns

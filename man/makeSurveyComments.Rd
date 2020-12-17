@@ -16,5 +16,5 @@ makeSurveyComments(df, surveyID, qids, updateID)
 \item{updateID}{Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.}
 }
 \description{
-Make the SURVEY_COMMENTS table
+This function creates the SURVEY_COMMENTS database table from raw survey data.
 }

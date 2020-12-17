@@ -1,12 +1,9 @@
 #' Make the SPOKEN_LANGS table
-#' @export
-#' @import dplyr
-#' @import stringr
-#'
 #'
 #' This function creates the SPOKEN_LANGS database table from raw survey data.
 #' @param df Raw survey data as a data frame. Must have columns 'responseID', 'consent', and 'completionCode'.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 # Make the SPOKEN_LANGS table ---------------------------------------------
 makeSpokenLangs <- function(df, updateID){

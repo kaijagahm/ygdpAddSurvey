@@ -1,12 +1,10 @@
 #' Make the CENSUS_COUNTY_DEMO table
-#' @export
-#' @import dplyr
-#' @import sf
 #'
-#' This function returns a **list**, not a **data frame**. The list contains the CENSUS_COUNTY_DEMO and CITIES portions of the database. This modifies CITIES from the makeDemoGeo function and returns the finished version of CITIES.
+#' This function returns a list, not a data frame. The list contains the CENSUS_COUNTY_DEMO and CITIES portions of the database. This modifies CITIES from the makeDemoGeo function and returns the finished version of CITIES.
 #' @param cities The CITIES element of the list returned by makeDemoGeo.R. It will be passed into this function to be further modified before being finalized.
 #' @param con A connection to the existing database, created with RSQLite.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 
 # Make CENSUS_COUNTY_DEMO table -------------------------------------------

@@ -14,5 +14,5 @@ makeVersionHistory(con, date, description)
 \item{description}{Description of the version. For a standard database update, it's just "added [surveyID]".}
 }
 \description{
-Make the VERSION_HISTORY table
+This function creates the row of the VERSION_HISTORY table that corresponds to the update we're making for this survey
 }

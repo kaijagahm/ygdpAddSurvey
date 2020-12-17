@@ -1,12 +1,10 @@
 #' Make the COMMENTS table
-#' @export
-#' @import dplyr
-#' @import stringr
 #'
 #' This function creates the COMMENTS database table from raw survey data.
 #' @param df Raw survey data as a data frame.
 #' @param questions The QUESTIONS portion of the database tables, created by makeQuestions.R
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 # Make COMMENTS table -----------------------------------------------------
 makeComments <- function(df, questions, updateID){

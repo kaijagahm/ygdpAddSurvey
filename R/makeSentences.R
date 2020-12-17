@@ -1,13 +1,11 @@
 #' Make the SENTENCES table
-#' @export
-#' @import dplyr
-#' @import stringr
 #'
 #' This function creates the SENTENCES database table from raw survey data.
 #' @param df Raw survey data as a data frame.
 #' @param masterList Master list of all sentences. ### XXX COME BACK TO THIS: HOW BEST TO LOAD AND UPDATE?
 #' @param con Connection to the current version of the database. Create the connection using RSQLite. For example: con <- dbConnect(RSQLite::SQLite(), here("database", "currentDB", "ygdpDB.db")) (for the database file ygdpDB.db, stored in "database/currentDB".)
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 #'
 # Make SENTENCES table ----------------------------------------------------
 makeSentences <- function(df, masterList, con, updateID){

@@ -1,11 +1,9 @@
 #' Make the DIALECT_REGIONS table
-#' @export
-#' @import dplyr
-#' @import sf
 #'
 #' Function to create the DIALECT_REGIONS database table.
 #' @param cities The CITIES table, created with makeDemoGeo.R and makeCensusCountyDemo.R.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 # Make DIALECT_REGIONS table ----------------------------------------------
 makeDialectRegions <- function(cities, updateID){

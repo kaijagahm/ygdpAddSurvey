@@ -1,10 +1,9 @@
 #' Fix the names from the qualtrics table
-#' @export
-#' @import dplyr
 #'
 #' Since the Qualtrics output has a weird three-line header, this function cleans up the names. Sets the first row of the data frame as names, then removes the first and second rows of the data frame. Then it renames a bunch of still-messy names from Qualtrics.
 #' @param df Raw survey data as a data frame. Must have column 'responseID'.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 # Naming function ---------------------------------------------------------
 fixNames <- function(df){

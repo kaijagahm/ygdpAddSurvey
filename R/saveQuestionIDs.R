@@ -1,10 +1,8 @@
 #' Save questionID's
-#' @export
-#' @import dplyr
-#' @import stringr
 #'
 #' This function separates out questionID's and column names from the raw survey data and returns them, for use in other functions.
 #' @param df Raw survey data as a data frame.
+#' @export
 saveQuestionIDs <- function(df){
   qids <- df[2,] %>% unname() %>% t() %>%
     as.data.frame() %>%

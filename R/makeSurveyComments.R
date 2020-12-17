@@ -1,13 +1,12 @@
 #' Make the SURVEY_COMMENTS table
-#' @export
-#' @import dplyr
-#' @import stringr
 #'
 #' This function creates the SURVEY_COMMENTS database table from raw survey data.
 #' @param df Raw survey data as a data frame. Must have columns 'responseID' and 'generalComments'.
 #' @param surveyID Character string that will become the `surveyID` column for this table. For example, "S11" for Survey 11.
 #' @param qids Data frame containing questionID/column name mappings for this survey. Create this using the `saveQuestionIDs()` function.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#'
+#'@export
 #'
 makeSurveyComments <- function(df, surveyID, qids, updateID){
   # check for required cols

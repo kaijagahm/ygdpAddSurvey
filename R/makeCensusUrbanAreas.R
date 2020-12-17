@@ -1,12 +1,10 @@
 #' Make the CENSUS_URBAN_AREAS table
-#' @export
-#' @import dplyr
-#' @import sf
 #'
 #' This function returns a data frame, the CENSUS_URBAN_AREAS table of the database.
 #' @param cities The CITIES element of the list returned by makeCensusCountyDemo.R (i.e. its final form)
 #' @param con A connection to the existing database, created with RSQLite.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 # Make CENSUS_URBAN_AREAS table -------------------------------------------
 makeCensusUrbanAreas <- function(cities, con, updateID){

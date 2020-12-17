@@ -12,5 +12,5 @@ makeTech(df, updateID)
 \item{updateID}{Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.}
 }
 \description{
-Make the TECH table
+This function creates the TECH database table from raw survey data.
 }

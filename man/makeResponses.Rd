@@ -14,5 +14,5 @@ makeResponses(df, updateID, surveyID)
 \item{surveyID}{Character string that will become the `surveyID` column for this table. For example, "S11" for Survey 11.}
 }
 \description{
-Make the RESPONSES table
+This function creates the RESPONSES database table from raw survey data.
 }

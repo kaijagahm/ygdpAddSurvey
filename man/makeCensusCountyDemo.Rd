@@ -14,5 +14,5 @@ makeCensusCountyDemo(cities, con, updateID)
 \item{updateID}{Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.}
 }
 \description{
-Make the CENSUS_COUNTY_DEMO table
+This function returns a list, not a data frame. The list contains the CENSUS_COUNTY_DEMO and CITIES portions of the database. This modifies CITIES from the makeDemoGeo function and returns the finished version of CITIES.
 }

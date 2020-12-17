@@ -1,6 +1,4 @@
 #' Make the SURVEYS table
-#' @export
-#' @import dplyr
 #'
 #' This function creates the SURVEYS database table from raw survey data.
 #' @param df Raw survey data as a data frame.
@@ -8,6 +6,7 @@
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
 #' @param admin Character string: name of the person who administered the survey. For example, "Jim Wood".
 #' @param surveyName Character string naming the survey (this is an opportunity to be more descriptive than `surveyID` allows.) For example, the `surveyName` for Survey 11 might be "Survey 11". Or, if you did a survey focused on a particular construction, you might call it "Needs Washed Survey".
+#' @export
 
 # Make SURVEYS table ------------------------------------------------------
 makeSurveys <- function(df, surveyID, updateID, admin, surveyName){

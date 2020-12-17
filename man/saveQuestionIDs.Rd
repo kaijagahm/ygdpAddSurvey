@@ -10,5 +10,5 @@ saveQuestionIDs(df)
 \item{df}{Raw survey data as a data frame.}
 }
 \description{
-Save questionID's
+This function separates out questionID's and column names from the raw survey data and returns them, for use in other functions.
 }

@@ -18,5 +18,5 @@ makeSurveys(df, surveyID, updateID, admin, surveyName)
 \item{surveyName}{Character string naming the survey (this is an opportunity to be more descriptive than `surveyID` allows.) For example, the `surveyName` for Survey 11 might be "Survey 11". Or, if you did a survey focused on a particular construction, you might call it "Needs Washed Survey".}
 }
 \description{
-Make the SURVEYS table
+This function creates the SURVEYS database table from raw survey data.
 }

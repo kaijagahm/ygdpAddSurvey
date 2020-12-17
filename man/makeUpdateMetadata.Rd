@@ -16,5 +16,5 @@ makeUpdateMetadata(updateID, date, updater, description)
 \item{description}{Description of the update. For a standard database update, it's just "added [surveyID]".}
 }
 \description{
-Make the UPDATE_METADATA table
+This function creates the row of the UPDATE_METADATA table that corresponds to the updateID that we've been using for all the other database tables.
 }

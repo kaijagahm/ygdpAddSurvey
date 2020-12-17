@@ -16,5 +16,5 @@ makeDemoGeo(df, updateID, con, overwrite = T)
 \item{overwrite}{Whether or not to overwrite existing geocoded localities, if `geocoded` already exists in the environment. This parameter was mainly included for function testing and development--it pretty much never makes sense to set it to F when using the function.}
 }
 \description{
-Make the DEMO_GEO table
+This function returns a list, not a data frame. The list contains the DEMO_GEO, CITIES, and CITIES_REF portions of the database. Note that for CITIES to be complete, it has to be further passed through the makeCensusCountyDemo.R function, which also outputs a list.
 }

@@ -1,11 +1,10 @@
 #' Make the CONSTRUCTIONS table
-#' @export
-#' @import dplyr
 #'
 #' Function to create the CONSTRUCTIONS database table.
 #' @param constructions A csv file, which you need to create separately before running this script. The table should have three columns: constructionID (existing or new ID's for all of the constructions contained in this survey), constructionName (the name of each construction, corresponding to the ID's), and pageYGDP (the URL of the YGDP page corresponding to this construction, if applicable.)
 #' @param con A connection to the existing database, created with RSQLite.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 
 # Make CONSTRUCTIONS table ------------------------------------------------
 makeConstructions <- function(constructions, con, updateID){

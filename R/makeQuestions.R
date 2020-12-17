@@ -1,12 +1,11 @@
 #' Make the QUESTIONS table
-#' @export
-#' @import dplyr
 #'
 #' This function creates the QUESTIONS database table from raw survey data.
 #' @param df Raw survey data as a data frame.
 #' @param qids Data frame containing questionID/column name mappings for this survey. This is created using the `saveQuestionIDs()` function. Must have columns 'colName' and 'questionIDRaw'.
 #' @param surveyID Character string that will become the `surveyID` column for this table. For example, "S11" for Survey 11.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @export
 #'
 # Make QUESTIONS table ----------------------------------------------------
 # `qids` is a saved df of the format output by saveQuestionIDs
