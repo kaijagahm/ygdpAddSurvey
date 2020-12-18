@@ -1,3 +1,22 @@
+#' Save questionID's
+#'
+#' This function separates out questionID's and column names from the raw survey data and returns them, for use in other functions.
+#' @param df Raw survey data as a data frame.
+#' @export
+saveQuestionIDs <- function(df){
+  qids <- df[2,] %>% unname() %>% t() %>%
+    as.data.frame() %>%
+    setNames("qid") %>%
+    mutate(extr = str_extract(qid, "(?<=ImportId\"\\:\")[^\"]+(?=\")")) %>%
+    pull(extr)
+  newNames <- df[1,] %>% unname() %>% t() %>%
+    as.data.frame() %>%
+    setNames("new") %>%
+    pull(new)
+  outdf <- data.frame(colName = newNames, questionIDRaw = qids)
+  return(outdf)
+}
+
 #' Fix the names from the qualtrics table
 #'
 #' Since the Qualtrics output has a weird three-line header, this function cleans up the names. Sets the first row of the data frame as names, then removes the first and second rows of the data frame. Then it renames a bunch of still-messy names from Qualtrics.
@@ -12,20 +31,20 @@ fixNames <- function(df){
     as.data.frame() %>%
     setNames("new") %>%
     pull(new) # first row of the df will become names
-
+  
   # Remove first and second row
   df <- df[-c(1:2),] # remove first and second row of the df
-
+  
   # Set first row as names
   names(df) <- newNames
-
+  
   # Check whether "Response ID" exists, and throw an error if not
   if("Response ID" %in% names(df)){
     df <- df
   }else{
     stop("Data must contain column 'Response ID'.")
   }
-
+  
   # Clean up names that we couldn't assign
   df <- df %>%
     {if("Response Type" %in% names(.)) select(-c("Response Type")) else .} %>%
@@ -49,5 +68,18 @@ fixNames <- function(df){
     {if("Browser Meta Info - Operating System" %in% names(.)) rename(., operatingSystem = "Browser Meta Info - Operating System") else .} %>%
     {if("Browser Meta Info - Resolution" %in% names(.)) rename(., resolution = "Browser Meta Info - Resolution") else .} %>%
     {if("CompCode" %in% names(.)) rename(., completionCode = "CompCode") else .}
+  return(df)
+}
+
+#' Remove any obsolete geography columns
+#'
+#' Before Kaija, Jason Zentz had rigged something up in Qualtrics that would geocode the localities--except it doesn't really work, and you end up with a lot of Worcester. This function removes the old geo stuff.
+#' @param df Raw survey data as a data frame.
+#' @export
+
+worcesterRemove <- function(df){
+  df <- df %>%
+    select(-contains("ZIP")) %>%
+    select(-contains("City-US"))
   return(df)
 }
