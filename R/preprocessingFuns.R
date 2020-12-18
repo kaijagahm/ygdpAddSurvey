@@ -49,7 +49,7 @@ fixNames <- function(df){
   df <- df %>%
     {if("Response Type" %in% names(.)) select(-`Response Type`) else .} %>%
     {if("External Data Reference" %in% names(.)) select(-`External Data Reference`) else .} %>%
-    {if("Distribution Channel" %in% names(.)) select(-`"Distribution Channel"`) else .} %>%
+    {if("Distribution Channel" %in% names(.)) select(-`Distribution Channel`) else .} %>%
     {if("Start Date" %in% names(.)) rename(., dateTimeStart = "Start Date") else .} %>%
     {if("End Date" %in% names(.)) rename(., dateTimeEnd = "End Date") else .} %>%
     {if("IP Address" %in% names(.)) rename(., ipAddress = "IP Address") else .} %>%
