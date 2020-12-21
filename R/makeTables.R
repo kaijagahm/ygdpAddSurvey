@@ -425,7 +425,7 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
   dg <- locs %>%
     select(responseID, type, cityID) %>%
     distinct() %>%
-    mutate(type = fct_recode(type,
+    mutate(type = forcats::fct_recode(type,
                              "currentCityID" = "current",
                              "raisedCityID" = "raised",
                              "motherCityID" = "mother",
