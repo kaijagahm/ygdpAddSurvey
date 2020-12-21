@@ -320,7 +320,7 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
     hereR::set_key("4dWewuABghwiuv3xmctuplLYSxw4DfzevnGVX5AIalk")
     geocoded <- hereR::geocode(unique_locs$togeocode, sf = FALSE) %>%
       rename(cityName = city, stateID = state, countryID = country,
-             long = contains("^lng"), lat = contains("^lat"), countyName = county) %>%
+             long = lng_position, lat = lat_position, countyName = county, postalCode = postal_code) %>%
       select(cityName, stateID, countryID, lat, long, postalCode, id, countyName)
   }
 
