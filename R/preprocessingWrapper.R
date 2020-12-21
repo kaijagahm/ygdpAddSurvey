@@ -7,6 +7,6 @@
 
 preprocessData <- function(df, updateID){
   df1 <- fixNames(df)
-  df2 <- worcesterRemove(df1)
+  df2 <- removeGeo(df1)
   return(df2)
 }
