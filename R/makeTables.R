@@ -319,9 +319,10 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
   if((!exists("geocoded"))|(exists("geocoded") & overwrite == T)){
     hereR::set_key("4dWewuABghwiuv3xmctuplLYSxw4DfzevnGVX5AIalk")
     geocoded <- hereR::geocode(unique_locs$togeocode, sf = FALSE) %>%
-      rename(cityName = city, stateName = state, countryID = country,
-             long = lng_position, lat = lat_position, countyName = county, postalCode = postal_code) %>%
-      select(cityName, stateName, countryID, lat, long, postalCode, id, countyName)
+      rename(cityName = city, stateID = state_code, stateName = state,
+             countryID = country_code, long = lng_position, lat = lat_position,
+             countyName = county, postalCode = postal_code) %>%
+      select(cityName, stateID, stateName, countryID, lat, long, postalCode, id, countyName)
   }
 
   # Join back to unique_locs by ID
@@ -390,16 +391,11 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
 
   # Now we can add the new cities to CITIES
   toAddToCities <- nomatch %>%
-    select(cityID, cityName, stateName, countyName, countryID,
+    select(cityID, cityName, stateID, stateName, countyName, countryID,
            lat, long, postalCode) %>%
-    mutate(updateID = updateID)
-
-  ## add stateNames
-  toAddToCities <- toAddToCities %>%
-    left_join(lookupTable, by = "stateName") %>%
-    # Remove state names for non-US states: e.g. India has a state abbreviated TN.
+    mutate(updateID = updateID) %>%
     mutate(stateName = case_when(countryID != "USA" ~ NA_character_,
-                                 TRUE ~ as.character(stateName)))
+                                 TRUE ~ stateName)) # remove state names for non-US states, purely to maintain backwards compatibility with older versions of the database (i.e. checking for duplicate city entries)
 
   # Make CITIES output
   citiesOut <- toAddToCities  %>%
