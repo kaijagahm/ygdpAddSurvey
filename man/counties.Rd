@@ -7,6 +7,9 @@
 \format{
 An object of class \code{"sf", "data.frame"}.
 }
+\source{
+https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b
+}
 \usage{
 data(counties)
 }
@@ -15,5 +18,6 @@ County-level demographic data from the US census (2010)
 }
 \examples{
 data(counties)
+
 }
 \keyword{datasets}

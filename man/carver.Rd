@@ -7,6 +7,9 @@
 \format{
 An object of class \code{"sf", "data.frame"}.
 }
+\source{
+YGDP GIS work
+}
 \usage{
 data(carver)
 }
@@ -15,5 +18,6 @@ Dialect region polygons following Carver (1987), American Regional Dialects.
 }
 \examples{
 data(carver)
+
 }
 \keyword{datasets}

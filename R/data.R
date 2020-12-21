@@ -13,6 +13,8 @@
 #'
 #' @examples
 #' data(counties)
+#'
+#' @source https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b
 "counties"
 
 #' US census urban areas data
@@ -29,6 +31,8 @@
 #'
 #' @examples
 #' data(ua)
+#'
+#' @source https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural/2010-urban-rural.html
 "ua"
 
 #' Dialect regions: north/south/west
@@ -46,6 +50,7 @@
 #'
 #' @examples
 #' data(nsw)
+#' @source YGDP GIS work
 "nsw"
 
 #' Dialect regions: ANAE
@@ -63,6 +68,8 @@
 #'
 #' @examples
 #' data(anae)
+#'
+#' @source YGDP GIS work
 "anae"
 
 #' Dialect regions: Carver
@@ -77,7 +84,8 @@
 #'
 #' @keywords datasets
 #'
-#'
 #' @examples
 #' data(carver)
+#'
+#' @source YGDP GIS work
 "carver"

@@ -7,6 +7,9 @@
 \format{
 An object of class \code{"sf", "data.frame"}.
 }
+\source{
+https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural/2010-urban-rural.html
+}
 \usage{
 data(ua)
 }
@@ -15,5 +18,6 @@ Urban area data from the US census
 }
 \examples{
 data(ua)
+
 }
 \keyword{datasets}
