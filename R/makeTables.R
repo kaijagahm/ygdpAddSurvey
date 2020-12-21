@@ -316,10 +316,10 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
 
   # 5. Geocode
   if((!exists("geocoded"))|(exists("geocoded") & overwrite == T)){
-    set_key("4dWewuABghwiuv3xmctuplLYSxw4DfzevnGVX5AIalk")
+    hereR::set_key("4dWewuABghwiuv3xmctuplLYSxw4DfzevnGVX5AIalk")
     geocoded <- hereR::geocode(unique_locs$togeocode, sf = FALSE) %>%
       rename(cityName = city, stateID = state, countryID = country,
-             long = lng, countyName = county) %>%
+             long = contains("^lng"), lat = contains("^lat"), countyName = county) %>%
       select(cityName, stateID, countryID, lat, long, postalCode, id, countyName)
   }
 
