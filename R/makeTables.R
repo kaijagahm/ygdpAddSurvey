@@ -319,9 +319,9 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
   if((!exists("geocoded"))|(exists("geocoded") & overwrite == T)){
     hereR::set_key("4dWewuABghwiuv3xmctuplLYSxw4DfzevnGVX5AIalk")
     geocoded <- hereR::geocode(unique_locs$togeocode, sf = FALSE) %>%
-      rename(cityName = city, stateID = state, countryID = country,
+      rename(cityName = city, stateName = state, countryID = country,
              long = lng_position, lat = lat_position, countyName = county, postalCode = postal_code) %>%
-      select(cityName, stateID, countryID, lat, long, postalCode, id, countyName)
+      select(cityName, stateName, countryID, lat, long, postalCode, id, countyName)
   }
 
   # Join back to unique_locs by ID
@@ -334,7 +334,7 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
   ## Are there any that match by lat/long?
   llmatch <- left_join(unique_locs,
                        cities %>% # get only the unique entries in CITIES
-                         group_by(cityName, stateID, countryID) %>%
+                         group_by(cityName, stateName, countryID) %>%
                          slice(1) %>%
                          ungroup() %>%
                          select(lat, long, cityID), by = c("lat", "long")) %>%
@@ -344,10 +344,10 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
   ## Any that match by city, state, country, but not lat/long?
   cscmatch <- left_join(unique_locs,
                         cities %>%
-                          group_by(cityName, stateID, countryID) %>%
+                          group_by(cityName, stateName, countryID) %>%
                           slice(1) %>%
                           ungroup() %>%
-                          select(cityName, stateID, countryID, cityID), by = c("cityName", "stateID", "countryID")) %>%
+                          select(cityName, stateName, countryID, cityID), by = c("cityName", "stateName", "countryID")) %>%
     select(togeocode, cityID) %>%
     filter(!(togeocode %in% llmatch$togeocode),
            !is.na(cityID))
@@ -390,13 +390,13 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
 
   # Now we can add the new cities to CITIES
   toAddToCities <- nomatch %>%
-    select(cityID, cityName, stateID, countyName, countryID,
+    select(cityID, cityName, stateName, countyName, countryID,
            lat, long, postalCode) %>%
     mutate(updateID = updateID)
 
   ## add stateNames
   toAddToCities <- toAddToCities %>%
-    left_join(lookupTable, by = "stateID") %>%
+    left_join(lookupTable, by = "stateName") %>%
     # Remove state names for non-US states: e.g. India has a state abbreviated TN.
     mutate(stateName = case_when(countryID != "USA" ~ NA_character_,
                                  TRUE ~ as.character(stateName)))
