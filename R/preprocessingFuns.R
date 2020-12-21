@@ -6,7 +6,7 @@
 saveQuestionIDs <- function(df){
   qids <- df[2,] %>% unname() %>% t() %>%
     as.data.frame() %>%
-    setNames("qid") %>%
+    stats::setNames("qid") %>%
     mutate(extr = str_extract(qid, "(?<=ImportId\"\\:\")[^\"]+(?=\")")) %>%
     pull(extr)
   newNames <- df[1,] %>% unname() %>% t() %>%
