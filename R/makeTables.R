@@ -880,7 +880,7 @@ makeSurveys <- function(df, surveyID, updateID, admin, surveyName){
   # Get start and end dates
   forDates <- df %>%
     select(dateTimeStart, dateTimeEnd) %>%
-    mutate_all(.funs = parse_datetime) # parse_datetime guesses the format
+    mutate_all(.funs = lubridate::parse_date_time) # parse_date_time guesses the format
   dateReleased <- min(forDates$dateTimeStart)
   dateClosed <- max(forDates$dateTimeEnd)
 
