@@ -8,6 +8,5 @@
 preprocessData <- function(df, updateID){
   df1 <- fixNames(df)
   df2 <- removeGeo(df1)
-  print('test')
   return(df2)
 }
