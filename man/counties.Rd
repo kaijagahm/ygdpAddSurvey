@@ -3,21 +3,25 @@
 \docType{data}
 \name{counties}
 \alias{counties}
-\title{US census data by county}
+\title{US counties shapefiles}
 \format{
-An object of class \code{"sf", "data.frame"}.
+A data frame/sf object with 3142 rows and 56 variables:
+
+A data frame/sf object with 3601 rows and 13 variables:
 }
 \source{
-https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b
+\url{https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b}
+
+\url{https://hub.arcgis.com/datasets/1eb393576fb748fc9c4cc445018b30f2_0}
 }
 \usage{
-data(counties)
+counties
+
+counties
 }
 \description{
-County-level demographic data from the US census (2010)
-}
-\examples{
-data(counties)
+An sf object containing county polygons, from the US census
 
+An sf object containing urban/rural area polygons, from the US census
 }
 \keyword{datasets}

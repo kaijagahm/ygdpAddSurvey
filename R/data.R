@@ -1,91 +1,64 @@
-#' US census data by county
+#' ANAE dialect regions
 #'
-#' County-level demographic data from the US census (2010)
+#' An sf object containing polygons delineating the dialect regions from the Atlas of North American English.
 #'
-#' @docType data
-#'
-#' @usage data(counties)
-#'
-#' @format An object of class \code{"sf", "data.frame"}.
-#'
-#' @keywords datasets
-#'
-#'
-#' @examples
-#' data(counties)
-#'
-#' @source https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b
-"counties"
-
-#' US census urban areas data
-#'
-#' Urban area data from the US census
-#'
-#' @docType data
-#'
-#' @usage data(ua)
-#'
-#' @format An object of class \code{"sf", "data.frame"}.
-#'
-#' @keywords datasets
-#'
-#' @examples
-#' data(ua)
-#'
-#' @source https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural/2010-urban-rural.html
-"ua"
-
-#' Dialect regions: north/south/west
-#'
-#' Dialect region polygons for a rough division of the country into north, south, and west regions
-#'
-#' @docType data
-#'
-#' @usage data(nsw)
-#'
-#' @format An object of class \code{"sf", "data.frame"}.
-#'
-#' @keywords datasets
-#'
-#'
-#' @examples
-#' data(nsw)
-#' @source YGDP GIS work
-"nsw"
-
-#' Dialect regions: ANAE
-#'
-#' Dialect region polygons for regions as defined in the Atlas of North American English.
-#'
-#' @docType data
-#'
-#' @usage data(anae)
-#'
-#' @format An object of class \code{"sf", "data.frame"}.
-#'
-#' @keywords datasets
-#'
-#'
-#' @examples
-#' data(anae)
-#'
-#' @source YGDP GIS work
+#' @format A data frame/sf object with 17 rows and 6 variables:
+#' \describe{
+#'   \item{OBJECTID}{ID for GIS, I think?}
+#'   \item{SHAPE_Leng}{Not sure what this is}
+#'   \item{Dialect_Re}{Name of the dialect region}
+#'   \item{Shape_Le_1}{Not sure what this is}
+#'   \item{Shape_Area}{Area of the dialect region, not sure what units}
+#'   \item{geometry}{sf geometry column}
+#'   ...
+#' }
+#' @source YGDP-generated polygons
 "anae"
 
-#' Dialect regions: Carver
+#' Carver dialect regions
 #'
-#' Dialect region polygons following Carver (1987), American Regional Dialects.
+#' An sf object containing polygons delineating the dialect regions defined in Carver (1987)
 #'
-#' @docType data
-#'
-#' @usage data(carver)
-#'
-#' @format An object of class \code{"sf", "data.frame"}.
-#'
-#' @keywords datasets
-#'
-#' @examples
-#' data(carver)
-#'
-#' @source YGDP GIS work
+#' @format A data frame/sf object with 26 rows and 5 variables:
+#' \describe{
+#'   \item{ID}{ID for GIS, I think?}
+#'   \item{Region}{Name of the region}
+#'   \item{Sub_Region}{Name of the sub-region}
+#'   \item{SubSub_Reg}{Name of the sub-sub-region}
+#'   \item{geometry}{sf geometry column}
+#'   ...
+#' }
+#' @source YGDP-generated polygons
 "carver"
+
+#' NSW dialect regions
+#'
+#' An sf object containing polygons dividing the country into North/South/West regions.
+#'
+#' @format A data frame/sf object with 3 rows and 5 variables:
+#' \describe{
+#'   \item{OBJECTID}{ID for GIS, I think?}
+#'   \item{SHAPE_Leng}{I don't know what this is}
+#'   \item{SHAPE_Area}{Area of the polygon}
+#'   \item{Dialect_Re}{Name of the region (north, south, or west)}
+#'   \item{geometry}{sf geometry column}
+#'   ...
+#' }
+#' @source YGDP-generated polygons
+"nsw"
+
+#' US counties shapefiles
+#'
+#' An sf object containing county polygons, from the US census
+#'
+#' @format A data frame/sf object with 3142 rows and 56 variables:
+#' @source \url{https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b}
+"counties"
+
+#' US urban areas shapefiles (census)
+#'
+#' An sf object containing urban/rural area polygons, from the US census
+#'
+#' @format A data frame/sf object with 3601 rows and 13 variables:
+#' @source \url{https://hub.arcgis.com/datasets/1eb393576fb748fc9c4cc445018b30f2_0}
+"counties"

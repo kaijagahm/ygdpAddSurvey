@@ -3,21 +3,25 @@
 \docType{data}
 \name{carver}
 \alias{carver}
-\title{Dialect regions: Carver}
+\title{Carver dialect regions}
 \format{
-An object of class \code{"sf", "data.frame"}.
+A data frame/sf object with 26 rows and 5 variables:
+\describe{
+  \item{ID}{ID for GIS, I think?}
+  \item{Region}{Name of the region}
+  \item{Sub_Region}{Name of the sub-region}
+  \item{SubSub_Reg}{Name of the sub-sub-region}
+  \item{geometry}{sf geometry column}
+  ...
+}
 }
 \source{
-YGDP GIS work
+YGDP-generated polygons
 }
 \usage{
-data(carver)
+carver
 }
 \description{
-Dialect region polygons following Carver (1987), American Regional Dialects.
-}
-\examples{
-data(carver)
-
+An sf object containing polygons delineating the dialect regions defined in Carver (1987)
 }
 \keyword{datasets}

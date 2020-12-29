@@ -3,21 +3,26 @@
 \docType{data}
 \name{anae}
 \alias{anae}
-\title{Dialect regions: ANAE}
+\title{ANAE dialect regions}
 \format{
-An object of class \code{"sf", "data.frame"}.
+A data frame/sf object with 17 rows and 6 variables:
+\describe{
+  \item{OBJECTID}{ID for GIS, I think?}
+  \item{SHAPE_Leng}{Not sure what this is}
+  \item{Dialect_Re}{Name of the dialect region}
+  \item{Shape_Le_1}{Not sure what this is}
+  \item{Shape_Area}{Area of the dialect region, not sure what units}
+  \item{geometry}{sf geometry column}
+  ...
+}
 }
 \source{
-YGDP GIS work
+YGDP-generated polygons
 }
 \usage{
-data(anae)
+anae
 }
 \description{
-Dialect region polygons for regions as defined in the Atlas of North American English.
-}
-\examples{
-data(anae)
-
+An sf object containing polygons delineating the dialect regions from the Atlas of North American English.
 }
 \keyword{datasets}

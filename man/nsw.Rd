@@ -3,20 +3,25 @@
 \docType{data}
 \name{nsw}
 \alias{nsw}
-\title{Dialect regions: north/south/west}
+\title{NSW dialect regions}
 \format{
-An object of class \code{"sf", "data.frame"}.
+A data frame/sf object with 3 rows and 5 variables:
+\describe{
+  \item{OBJECTID}{ID for GIS, I think?}
+  \item{SHAPE_Leng}{I don't know what this is}
+  \item{SHAPE_Area}{Area of the polygon}
+  \item{Dialect_Re}{Name of the region (north, south, or west)}
+  \item{geometry}{sf geometry column}
+  ...
+}
 }
 \source{
-YGDP GIS work
+YGDP-generated polygons
 }
 \usage{
-data(nsw)
+nsw
 }
 \description{
-Dialect region polygons for a rough division of the country into north, south, and west regions
-}
-\examples{
-data(nsw)
+An sf object containing polygons dividing the country into North/South/West regions.
 }
 \keyword{datasets}
