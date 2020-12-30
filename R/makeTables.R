@@ -152,7 +152,7 @@ makeComments <- function(df, questions, updateID){
     left_join(questions %>%
                 select(questionID, questionText),
               by = c("sentenceID" = "questionText")) %>%
-    mutate(sentenceID = str_extract(sentenceID, "(?<=^comments\\_).*$"),
+    mutate(sentenceID = stringr::str_extract(sentenceID, "(?<=^comments\\_).*$"),
            updateID = updateID)
 
   # remove NA comments
@@ -161,8 +161,8 @@ makeComments <- function(df, questions, updateID){
 
   # Replace double quotation marks
   comments <- comments %>%
-    mutate(comment = str_replace_all(comment, "\"", "'"),
-           comment = str_replace_all(comment, "\n", "")) %>%
+    mutate(comment = stringr::str_replace_all(comment, "\"", "'"),
+           comment = stringr::str_replace_all(comment, "\n", "")) %>%
     mutate_all(., .funs = as.character)
 
   message("Successfully created the COMMENTS table.")
@@ -271,21 +271,21 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   # 2.5 Clean up the locations and create the `togeocode` column
   locs <- locs %>%
-    mutate(country = str_replace(country, "\\s\\-\\s.*$", "")) %>%
+    mutate(country = stringr::str_replace(country, "\\s\\-\\s.*$", "")) %>%
     mutate(city = tolower(city),
            state = tolower(state),
            country = tolower(country),
            togeocode = paste(city, state, country, sep = " ")) %>%
-    mutate(togeocode = str_replace_all(togeocode, "\\sNA|\\sNA\\s|NA\\s", "")) %>%
+    mutate(togeocode = stringr::str_replace_all(togeocode, "\\sNA|\\sNA\\s|NA\\s", "")) %>%
     mutate_all(as.character) %>%
-    mutate(state = str_replace_all(state, "outside the united states", ""),
-           togeocode = str_replace_all(togeocode, "outside the united states", "")) %>%
-    mutate(togeocode = str_replace_all(togeocode, "^\\s|\\s$", "")) %>%
-    mutate(togeocode = str_replace(togeocode, "united states", ""), # removing "united states" because for some reason that tends to make the geocoding mess up.
-           togeocode = str_replace(togeocode, "united state", ""),
-           togeocode = str_replace(togeocode, "usa", ""),
-           togeocode = str_replace_all(togeocode, "\\d", ""),
-           togeocode = str_replace_all(togeocode, "^\\s|\\s$", ""))
+    mutate(state = stringr::str_replace_all(state, "outside the united states", ""),
+           togeocode = stringr::str_replace_all(togeocode, "outside the united states", "")) %>%
+    mutate(togeocode = stringr::str_replace_all(togeocode, "^\\s|\\s$", "")) %>%
+    mutate(togeocode = stringr::str_replace(togeocode, "united states", ""), # removing "united states" because for some reason that tends to make the geocoding mess up.
+           togeocode = stringr::str_replace(togeocode, "united state", ""),
+           togeocode = stringr::str_replace(togeocode, "usa", ""),
+           togeocode = stringr::str_replace_all(togeocode, "\\d", ""),
+           togeocode = stringr::str_replace_all(togeocode, "^\\s|\\s$", ""))
 
   # 3. Check whether any cities already exist in CITIES_REF from the database
   ## make sure we only have unique cities in citiesRef
@@ -367,7 +367,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
   # 8. Add new cities to CITIES
   maxID <- cities %>%
     pull(cityID) %>%
-    str_replace("C", "") %>%
+    stringr::str_replace("C", "") %>%
     as.numeric() %>%
     max()
 
@@ -458,7 +458,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
            race = case_when(is.na(raceOther) ~ race,
                             !is.na(raceOther) & !is.na(race) ~ paste(race, raceOther, sep = ","),
                             !is.na(raceOther) & is.na(race) ~ raceOther),
-           race = str_replace(race, "other,", "")) %>%
+           race = stringr::str_replace(race, "other,", "")) %>%
     select(-raceOther) %>%
     mutate(education = fct_recode(education,
                                   "associate" = "associates",
@@ -623,7 +623,7 @@ makeRatings <- function(df, questions, surveyID, updateID){
     left_join(questions %>%
                 select(questionID, questionText),
               by = c("sentenceID" = "questionText")) %>%
-    mutate(sentenceID = str_extract(sentenceID, "(?<=\\_).*$"),
+    mutate(sentenceID = stringr::str_extract(sentenceID, "(?<=\\_).*$"),
            surveyID = surveyID,
            updateID = updateID)
 
@@ -686,7 +686,7 @@ makeSentences <- function(df, masterList, con, updateID){
   cuIDs <- df %>%
     select(contains("CU_", ignore.case = F)) %>%
     names() %>%
-    str_extract(., "(?<=CU\\_).*")
+    stringr::str_extract(., "(?<=CU\\_).*")
   if(!(all(grepl("^[0-9,\\.]*$", cuIDs)))){
     message(paste0("CU sentenceID's contain characters other than numbers and '.' The offenders are: ", paste(cuIDs[!(grepl("^[0-9,\\.]*$", cuIDs))], collapse = ", "),  ". Consider whether this is a problem, and fix your sentence column names if need be."))
   }
@@ -695,7 +695,7 @@ makeSentences <- function(df, masterList, con, updateID){
   cgIDs <- df %>%
     select(contains("CG_", ignore.case = F)) %>%
     names() %>%
-    str_extract(., "(?<=CG\\_).*")
+    stringr::str_extract(., "(?<=CG\\_).*")
   if(!(all(grepl("^[0-9,\\.]*$", cgIDs)))){
     message(paste0("CG sentenceID's contain characters other than numbers and '.' The offenders are: ",
                    paste(cgIDs[!(grepl("^[0-9,\\.]*$", cgIDs))], collapse = ", "),
@@ -706,7 +706,7 @@ makeSentences <- function(df, masterList, con, updateID){
   tsIDs <- df %>%
     select(contains("TS_", ignore.case = F)) %>%
     names() %>%
-    str_extract(., "(?<=TS\\_).*")
+    stringr::str_extract(., "(?<=TS\\_).*")
   if(!(all(grepl("^[0-9,\\.]*$", tsIDs)))){
     message(paste0("TS sentenceID's contain characters other than numbers and '.' The offenders are: ",
                    paste(tsIDs[!(grepl("^[0-9,\\.]*$", tsIDs))], collapse = ", "),
@@ -767,8 +767,8 @@ makeSpokenLangs <- function(df, updateID){
 
   # Strip out leading and trailing spaces
   df <- df %>%
-    mutate(language = str_replace(language, "^\\s+", ""),
-           language = str_replace(language, "\\s+$", ""))
+    mutate(language = stringr::str_replace(language, "^\\s+", ""),
+           language = stringr::str_replace(language, "\\s+$", ""))
 
   # Turn "na" or "n/a" or misspellings of "english" to NA
   df <- df %>%
@@ -847,7 +847,7 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
     a <- qids %>%
       filter(colName == "generalComments") %>%
       pull(questionIDRaw) %>%
-      str_extract("QID\\d+")
+      stringr::str_extract("QID\\d+")
     b <- paste0(surveyID, a) # make the full questionID string
   }else{
     b <- NA
@@ -918,7 +918,7 @@ makeSurveySentences <- function(df, surveyID, updateID){
     select(matches("CU\\_|CG\\_|TS\\_")) %>%
     select(!matches("comments\\_")) %>%
     names() %>%
-    str_extract(., "(?<=[A-Z]\\_)[0-9,\\.]+$") # only the sentence number
+    stringr::str_extract(., "(?<=[A-Z]\\_)[0-9,\\.]+$") # only the sentence number
 
   # initialize
   surveySentences <- data.frame(
@@ -1014,8 +1014,8 @@ makeVersionHistory <- function(con, date, description){
 
   # Create new version number: adding a survey updates the middle number, so we add 1 to the current middle number and then make the last number into 0.
   newVersion <- lastVersion %>%
-    str_replace(., "(?<=\\.)\\d+(?=\\.)", as.character(as.numeric(str_extract(lastVersion, "(?<=\\.)\\d+(?=\\.)")) + 1)) %>%
-    str_replace(., "(?<=\\.)\\d+$", "0")
+    stringr::str_replace(., "(?<=\\.)\\d+(?=\\.)", as.character(as.numeric(stringr::str_extract(lastVersion, "(?<=\\.)\\d+(?=\\.)")) + 1)) %>%
+    stringr::str_replace(., "(?<=\\.)\\d+$", "0")
 
   # Make the new row for versionHistory
   versionHistory <- data.frame(versionNumber = newVersion,
