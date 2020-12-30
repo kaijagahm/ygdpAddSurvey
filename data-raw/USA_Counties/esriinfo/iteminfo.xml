@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ESRI_ItemInformation Culture='en-US'>
+<name>USA Counties</name>
+<guid>9CE766A9-05CC-41D6-A9D5-E86C8808992D</guid>
+<catalogpath></catalogpath>
+<snippet>This group layer presents the counties of the United States in the 50 states, the District of Columbia, and Puerto Rico. It provides detailed boundaries below 1:3m scale and generalized boundaries above 1:3m scale.</snippet>
+<description>This group layer presents the counties of the United States in the 50 states, the District of Columbia, and Puerto Rico. Below 1:3m scale it provides detailed boundaries that are consistent with the tract, block group, and state datasets and are effective at county, regional, and state levels. Above 1:3m scale the county boundaries are generalized to improve draw performance and be used effectively at a national level and have no Puerto Rico data.</description>
+<summary>This group layer presents the counties of the United States in the 50 states, the District of Columbia, and Puerto Rico. It provides detailed boundaries below 1:3m scale and generalized boundaries above 1:3m scale.</summary>
+<title>USA Counties</title>
+<tags>layer, polygon, area, population, detail, households, demographics, society, boundaries, farming, United States, U.S. Counties, Counties, Puerto Rico, 2010, 2018</tags>
+<type>Layer Package</type>
+<typekeywords>
+<typekeyword>File Geodatabase Feature Class</typekeyword>
+<typekeyword>Layer Package</typekeyword>
+<typekeyword>Data</typekeyword>
+<typekeyword>ArcMap</typekeyword>
+<typekeyword>ArcGlobe</typekeyword>
+<typekeyword>ArcGIS Explorer</typekeyword>
+<typekeyword>lpk</typekeyword>
+</typekeywords>
+<thumbnail>thumbnail/thumbnail.png</thumbnail>
+<documentation></documentation>
+<url></url>
+<datalastmodifiedtime></datalastmodifiedtime>
+<extent>
+<xmin>-179.14734</xmin>
+<ymin>17.881242</ymin>
+<xmax>179.778465</xmax>
+<ymax>71.406235408712</ymax>
+</extent>
+<spatialreference>GCS_WGS_1984</spatialreference>
+<accessinformation>Esri, TomTom, U.S. Department of Commerce, Census Bureau</accessinformation>
+<licenseinfo>The datasets included within Esri Data &amp; Maps are subject to varying redistribution rights that have been granted by Esri’s third party data suppliers. Consult the Redistribution Rights document to determine the ways in which Licensee is permitted to use and redistribute each specific dataset and the applicable disclaimers, attribution requirements, and other conditions of use.</licenseinfo>
+</ESRI_ItemInformation>
