@@ -4,12 +4,14 @@
 \alias{makeDemoGeo}
 \title{Make the DEMO_GEO table}
 \usage{
-makeDemoGeo(df, updateID, con, overwrite = T)
+makeDemoGeo(df, updateID, key, con, overwrite = T)
 }
 \arguments{
 \item{df}{Raw survey data as a data frame.}
 
 \item{updateID}{Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.}
+
+\item{key}{The API key for the hereR API}
 
 \item{con}{A connection to the existing database, created with RSQLite.}
 
