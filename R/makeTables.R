@@ -237,7 +237,7 @@ makeConstructions <- function(constructions, con, updateID){
 #' @export
 
 # Make DEMO_GEO table -----------------------------------------------------
-makeDemoGeo <- function(df, updateID, con, overwrite = T){
+makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
   # Pull in CITIES and CITIES_REF from the database
   citiesRef <- dbTable(con, "cities_ref")
   cities <- dbTable(con, "cities")
@@ -327,7 +327,7 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
 
   # 5. Geocode
   if((!exists("geocoded"))|(exists("geocoded") & overwrite == T)){
-    hereR::set_key("4dWewuABghwiuv3xmctuplLYSxw4DfzevnGVX5AIalk")
+    hereR::set_key(key)
     geocoded <- hereR::geocode(unique_locs$togeocode, sf = FALSE) %>%
       rename(cityName = city, stateID = state_code, stateName = state,
              countryID = country_code, long = lng_position, lat = lat_position,
