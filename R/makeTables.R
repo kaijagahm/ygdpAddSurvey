@@ -9,6 +9,7 @@
 
 # Make CENSUS_COUNTY_DEMO table -------------------------------------------
 makeCensusCountyDemo <- function(cities, con, updateID){
+  data(counties)
   # Pull in CENSUS_COUNTY_DEMO
   censusCountyDemo <- dbTable(con, "census_county_demo")
 
@@ -94,6 +95,15 @@ makeCensusCountyDemo <- function(cities, con, updateID){
 
 # Make CENSUS_URBAN_AREAS table -------------------------------------------
 makeCensusUrbanAreas <- function(cities, con, updateID){
+  # Pull in the two datasets and join them together
+  data(uaCols)
+  data(uaGeom)
+  ua <- cbind(uaCols, uaGeom) %>%
+    sf::st_as_sf()
+  if(ncol(ua) > 2){
+    print("Successfully joined urban areas datasets. Preparing to create table...")
+  }
+
   # Pull in CENSUS_URBAN_AREAS
   censusUrbanAreas <- dbTable(con, "census_urban_areas")
 
@@ -489,6 +499,12 @@ makeDemoGeo <- function(df, updateID, con, overwrite = T){
 
 # Make DIALECT_REGIONS table ----------------------------------------------
 makeDialectRegions <- function(cities, updateID){
+  # Pull in the data
+  data(anae)
+  data(nsw)
+  data(carver)
+
+  # Make the table
   ll <- cities %>%
     select(lat, long, cityID) %>%
     st_as_sf(., coords = c("long", "lat")) %>%
