@@ -229,6 +229,7 @@ makeConstructions <- function(constructions, con, updateID){
 #' @param df Raw survey data as a data frame.
 #' @param con A connection to the existing database, created with RSQLite.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
+#' @param key The API key for the hereR API
 #' @param overwrite Whether or not to overwrite existing geocoded localities, if `geocoded` already exists in the environment. This parameter was mainly included for function testing and development--it pretty much never makes sense to set it to F when using the function.
 #' @import forcats
 #' @export
