@@ -3,8 +3,6 @@
 # GH issue #32
 
 dbTable <- function(con = con, tableName){
-  library(RSQLite)
-  library(lubridate)
   tab <- DBI::dbReadTable(con, tableName) # read in the table. All cols will be character because of the way we encoded them.
 
   # Change things to NA's ---------------------------------------------------
