@@ -14,11 +14,14 @@ Imports:
     here,
     hereR,
     magrittr,
+    methods,
     lubridate,
     rgdal,
     sf,
+    stats,
     stringr,
     tidyr,
-    usethis
+    usethis,
+    utils
 Encoding: UTF-8
 RoxygenNote: 7.1.1.9000
