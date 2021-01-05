@@ -21,11 +21,12 @@ makeCensusCountyDemo <- function(cities, con, updateID){
   ll <- cities %>%
     filter(!is.na(lat)) %>%
     select(lat, long, cityID) %>%
-    st_as_sf(., coords = c("long", "lat"), crs = 4326, remove = FALSE) %>%
-    st_transform(., crs = 2163)
+    sf::st_as_sf(., coords = c("long", "lat"), crs = 4326, remove = FALSE) %>%
+    sf::st_transform(., crs = 2163)
 
   # Join to county data (loaded at the beginning of this script). Drop geometry.
-  citiesCountyData <- st_join(ll, counties) %>%
+  citiesCountyData <- st_join(ll, counties %>% # transform counties to planar
+                                st_tranform(., crs = 2163)) %>%
     st_drop_geometry()
 
   # Now we're going to correct the county names in CITIES, since we've decided to privilege the county values from ESRI over the ones from the geocoder.
@@ -96,7 +97,9 @@ makeCensusCountyDemo <- function(cities, con, updateID){
 makeCensusUrbanAreas <- function(cities, con, updateID){
   # Pull in the two datasets and join them together
   ua <- cbind(uaCols, uaGeom) %>%
-    sf::st_as_sf()
+    sf::st_as_sf(., crs = 4326) %>%
+    sf::st_transform(., crs = 2163) # transform to planar
+
   if(ncol(ua) > 2){
     print("Successfully joined urban areas datasets. Preparing to create table...")
   }
@@ -113,11 +116,12 @@ makeCensusUrbanAreas <- function(cities, con, updateID){
   ll <- cities %>%
     filter(!is.na(lat)) %>%
     select(lat, long, cityID) %>%
-    st_as_sf(., coords = c("long", "lat"), crs = 4326, remove = FALSE) %>%
-    st_transform(., crs = 2163)
+    sf::st_as_sf(., coords = c("long", "lat"),
+             crs = 4326, remove = FALSE) %>%
+    sf::st_transform(., crs = 2163) # transform to planar to match ua
 
   # Join to urban areas and drop geometry
-  citiesUrbanAreaData <- st_join(ll, ua) %>%
+  citiesUrbanAreaData <- st_join(ll, ua) %>% # can do this join bc both are planar/same crs
     st_drop_geometry() %>%
     select(-c("lat", "long"))
 
@@ -506,7 +510,8 @@ makeDialectRegions <- function(cities, updateID){
 
   # Perform each of the spatial joins.
   ## Occasionally, a point overlaps with more than one dialect region. I don't know how to choose, so I've opted to just take the first instance of overlap each time.
-  nsw_join <- st_join(ll, nsw) %>%
+  nsw_join <- st_join(ll, nsw %>% # transform to planar
+                        st_transform(., crs = 2163)) %>%
     rename(regionNSW = Dialect_Re) %>%
     select(cityID, regionNSW) %>%
     group_by(cityID) %>%
@@ -514,7 +519,8 @@ makeDialectRegions <- function(cities, updateID){
     ungroup() %>%
     st_drop_geometry()
 
-  anae_join <- st_join(ll, anae) %>%
+  anae_join <- st_join(ll, anae %>% # transform to planar
+                         st_transform(., crs = 2163)) %>%
     rename(regionANAE = Dialect_Re) %>%
     select(cityID, regionANAE) %>%
     group_by(cityID) %>%
@@ -522,7 +528,8 @@ makeDialectRegions <- function(cities, updateID){
     ungroup() %>%
     st_drop_geometry()
 
-  carver_join <- st_join(ll, carver) %>%
+  carver_join <- st_join(ll, carver %>% # transform to planar
+                           st_transform(., crs = 2163)) %>%
     rename(regionCarver = Region,
            subRegionCarver = Sub_Region,
            subSubRegionCarver = SubSub_Reg) %>%
