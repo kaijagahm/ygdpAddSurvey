@@ -26,7 +26,7 @@ makeCensusCountyDemo <- function(cities, con, updateID){
 
   # Join to county data (loaded at the beginning of this script). Drop geometry.
   citiesCountyData <- st_join(ll, counties %>% # transform counties to planar
-                                st_tranform(., crs = 2163)) %>%
+                                st_transform(., crs = 2163)) %>%
     st_drop_geometry()
 
   # Now we're going to correct the county names in CITIES, since we've decided to privilege the county values from ESRI over the ones from the geocoder.
