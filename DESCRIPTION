@@ -17,7 +17,6 @@ Imports:
     magrittr,
     methods,
     lubridate,
-    rgdal,
     sf,
     stats,
     stringr,

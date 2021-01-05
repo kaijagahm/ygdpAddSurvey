@@ -3,7 +3,6 @@
 # Load packages we'll need for this processing
 library(dplyr)
 library(sf)
-library(rgdal)
 library(usethis)
 library(here)
 
