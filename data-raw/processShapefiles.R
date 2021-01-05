@@ -7,10 +7,10 @@ library(usethis)
 library(here)
 
 # Read in the shapefiles
-anae <- st_read(here("data-raw", "ANAE"))
-carver <- st_read(here("data-raw", "Carver"))
-nsw <- st_read(here("data-raw", "NSW"))
-counties <- st_read(here("data-raw", "USA_Counties", "v107", "counties.gdb"))
+anae <- st_read(here("data-raw", "ANAE")) %>% st_as_sf(., crs = 4326)
+carver <- st_read(here("data-raw", "Carver")) %>% st_as_sf(., crs = 4326)
+nsw <- st_read(here("data-raw", "NSW")) %>% st_as_sf(., crs = 4326)
+counties <- st_read(here("data-raw", "USA_Counties", "v107", "counties.gdb")) %>% st_as_sf(., crs = 4326)
 
 # Processed UA separately, outside of the package in shrinkUAShapefile.R and saved it, compressed and with most columns removed, to the data/ folder of the package.
 
