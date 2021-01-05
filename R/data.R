@@ -21,7 +21,7 @@
 #'
 #' @format A data frame/sf object with 26 rows and 5 variables:
 #' \describe{
-#'   \item{ID}{ID for GIS, I think?}
+#'   \item{Id}{ID for GIS, I think?}
 #'   \item{Region}{Name of the region}
 #'   \item{Sub_Region}{Name of the sub-region}
 #'   \item{SubSub_Reg}{Name of the sub-sub-region}
@@ -55,11 +55,19 @@
 #' @source \url{https://www.arcgis.com/home/item.html?id=a00d6b6149b34ed3b833e10fb72ef47b}
 "counties"
 
-#' US urban areas shapefiles (census)
+#' US urban areas shapefiles (non-geometry columns only)
 #'
-#' An sf object containing urban/rural area polygons, from the US census
+#' An sf object containing urban/rural area information to go with uaGeom. Info from the US census.
 #'
-#' @format A data frame/sf object with 3601 rows and 13 variables:
+#' @format A data frame/sf object with 3601 rows and 12 variables:
 #' @source \url{https://hub.arcgis.com/datasets/1eb393576fb748fc9c4cc445018b30f2_0}
-"counties"
+"uaCols"
+
+#' US urban areas shapefiles (geometry column only)
+#'
+#' An sf object containing geometry information to go with uaCols. Geometry only.
+#'
+#' @format A data frame/sf object with 3601 rows and 1 variable:
+#' @source \url{https://hub.arcgis.com/datasets/1eb393576fb748fc9c4cc445018b30f2_0}
+"uaGeom"
 
