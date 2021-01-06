@@ -4,7 +4,7 @@
 \alias{updateTable}
 \title{Append a newly-created table to the existing database table}
 \usage{
-updateTable(tableName, tableNew, overwrite = F, con = con, u = updateIDString)
+updateTable(tableName, tableNew, overwrite = F, cn = con, u = updateIDString)
 }
 \arguments{
 \item{tableName}{A character string: name of the database table. Not case sensitive. E.g. "responses" for the RESPONSES table.}
@@ -13,7 +13,7 @@ updateTable(tableName, tableNew, overwrite = F, con = con, u = updateIDString)
 
 \item{overwrite}{FALSE by default. If FALSE, the function checks whether parameter `u` is already contained in the updateID column of the database table. If it's not, then the function appends the data from `tableNew`. If it is, the function does nothing and returns the table as is. If `overwrite` == TRUE, then if `u` is already in the database table, all data with updateID `u` will be *removed* and replaced with the data from `tableNew`.}
 
-\item{con}{SQLite connection to the database.}
+\item{cn}{SQLite connection to the database.}
 
 \item{u}{the updateID you're using for this database update. When using the template script, `u` should be updateIDString.}
 }
