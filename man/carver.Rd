@@ -7,7 +7,7 @@
 \format{
 A data frame/sf object with 26 rows and 5 variables:
 \describe{
-  \item{ID}{ID for GIS, I think?}
+  \item{Id}{ID for GIS, I think?}
   \item{Region}{Name of the region}
   \item{Sub_Region}{Name of the sub-region}
   \item{SubSub_Reg}{Name of the sub-sub-region}
