@@ -80,9 +80,15 @@ makeCensusCountyDemo <- function(cities, con, updateID){
   listOut <- list("CITIES" = citiesOut,
                   "CENSUS_COUNTY_DEMO" = censusCountyDemoOut)
 
-  message("Successfully created the CENSUS_COUNTY_DEMO table and an updated version of the CITIES table: output is a list.")
-
-  return(listOut)
+  # Perform a basic check and send a success or error message.
+  if(length(listOut) == 2 &
+     !is.null(listOut[[1]]) &
+     !is.null(listOut[[2]])){
+    message(paste0("Successfully created the CENSUS_COUNTY_DEMO table with ", nrow(listOut[[2]]), " rows, and an updated version of the CITIES table with ", nrow(listOut[[1]]), " rows. Output is a list with the CITIES portion as element 1 and the CENSUS_COUNTY_DEMO portion as element 2."))
+    return(listOut)
+  }else{
+    stop("Something's wrong with the makeCensusCountyDemo function. Either the output list does not have two elements, or one of the elements is NULL.")
+  }
 }
 
 #' Make the CENSUS_URBAN_AREAS table
@@ -132,9 +138,14 @@ makeCensusUrbanAreas <- function(cities, con, updateID){
     filter(!(cityID %in% censusUrbanAreas$cityID)) %>% # remove any cities that might already be in CENSUS_URBAN_AREAS.
     mutate_all(., .funs = as.character)
 
-  message("Successfully created CENSUS_URBAN_AREAS.")
-
-  return(cua)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(cua) & is.data.frame(cua) & nrow(cua) > 0){
+    message(paste0("Successfully created the CENSUS_URBAN_AREAS table with ",
+                   nrow(cua), " rows."))
+    return(cua)
+  }else{
+    stop("Something's wrong with the makeCensusUrbanAreas function. Unable to create the output table.")
+  }
 }
 
 #' Make the COMMENTS table
@@ -169,10 +180,14 @@ makeComments <- function(df, questions, updateID){
            comment = stringr::str_replace_all(comment, "\n", "")) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the COMMENTS table.")
-
-  # Return
-  return(comments)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(comments) & is.data.frame(comments) & nrow(comments) > 0){
+    message(paste0("Successfully created the COMMENTS table with ",
+                   nrow(comments), " rows."))
+    return(comments)
+  }else{
+    stop("Something's wrong with the makeComments function. Unable to create the output table.")
+  }
 }
 
 #' Make the CONSTRUCTIONS table
@@ -221,10 +236,14 @@ makeConstructions <- function(constructions, con, updateID){
     mutate(updateID = updateID) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created CONSTRUCTIONS.")
-
-  # return
-  return(constructions)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(constructions) & is.data.frame(constructions) & nrow(constructions) > 0){
+    message(paste0("Successfully created the CONSTRUCTIONS table with ",
+                   nrow(constructions), " rows."))
+    return(constructions)
+  }else{
+    stop("Something's wrong with the makeConstructions function. Unable to create the output table.")
+  }
 }
 
 #' Make the DEMO_GEO table
@@ -487,9 +506,14 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
                   "CITIES_REF" = citiesRefOut,
                   "DEMO_GEO" = dg)
 
-  message("Successfully created the CITIES, CITIES_REF, and DEMO_GEO tables: output is a list.")
-
-  return(listOut)
+  # Perform a basic check and send a success or error message.
+  if(length(listOut) == 3 & !is.null(listOut[[1]]) & !is.null(listOut[[2]]) & !is.null(listOut[[3]])){
+    message(paste0("Successfully created the CONSTRUCTIONS table with ",
+                   nrow(constructions), " rows."))
+    return(listOut)
+  }else{
+    stop("Something's wrong with the makeDemoGeo function. There may have been a problem creating the output list, or one of the list elements is null.")
+  }
 }
 
 #' Make the DIALECT_REGIONS table
@@ -558,11 +582,14 @@ makeDialectRegions <- function(cities, updateID){
   dialect_regions <- dialect_regions %>%
     mutate(updateID = updateID)
 
-  # Message
-  message("Successfully created DIALECT_REGIONS")
-
-  # return
-  return(dialect_regions)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(dialect_regions) & is.data.frame(dialect_regions) & nrow(dialect_regions) > 0){
+    message(paste0("Successfully created the DIALECT_REGIONS table with ",
+                   nrow(dialect_regions), " rows."))
+    return(dialect_regions)
+  }else{
+    stop("Something's wrong with the makeDialectRegions function. Unable to create the output table.")
+  }
 }
 
 #' Make the QUESTIONS table
@@ -604,10 +631,14 @@ makeQuestions <- function(df, qids, surveyID, updateID){
     select(questionID, questionText, surveyID, stimulusType, scaleOptions, problems, updateID) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the QUESTIONS table.")
-
-  # Return
-  return(questions)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(questions) & is.data.frame(questions) & nrow(questions) > 0){
+    message(paste0("Successfully created the QUESTIONS table with ",
+                   nrow(questions), " rows."))
+    return(questions)
+  }else{
+    stop("Something's wrong with the makeQuestions function. Unable to create the output table.")
+  }
 }
 
 #' Make the RATINGS table
@@ -644,10 +675,14 @@ makeRatings <- function(df, questions, surveyID, updateID){
     filter(!is.na(ratings)) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the RATINGS table.")
-
-  # Return
-  return(ratings)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(ratings) & is.data.frame(ratings) & nrow(ratings) > 0){
+    message(paste0("Successfully created the RATINGS table with ",
+                   nrow(ratings), " rows."))
+    return(ratings)
+  }else{
+    stop("Something's wrong with the makeRatings function. Unable to create the output table.")
+  }
 }
 
 #' Make the RESPONSES table
@@ -673,10 +708,14 @@ makeResponses <- function(df, updateID, surveyID){
     distinct() %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the RESPONSES table.")
-
-  # return
-  return(responses)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(responses) & is.data.frame(responses) & nrow(responses) > 0){
+    message(paste0("Successfully created the RESPONSES table with ",
+                   nrow(responses), " rows."))
+    return(responses)
+  }else{
+    stop("Something's wrong with the makeResponses function. Unable to create the output table.")
+  }
 }
 
 #' Make the SENTENCES table
@@ -746,11 +785,14 @@ makeSentences <- function(df, masterList, con, updateID){
     filter(!(sentenceID %in% s$sentenceID)) %>%
     mutate_all(., .funs = as.character)
 
-  message(paste0(n, " sentences out of ", tot, " were already in the database, so your final SENTENCES table contains ", tot-n, " sentences."))
-  message("Successfully created the SENTENCES table.")
-
-  # Return
-  return(sentences)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(sentences) & is.data.frame(sentences) & nrow(sentences) > 0){
+    message("Successfully created the SENTENCES table.")
+    message(paste0(n, " sentences out of ", tot, " were already in the database, so your final SENTENCES table contains ", tot-n, " sentences."))
+    return(sentences)
+  }else{
+    stop("Something's wrong with the makeSentences function. Unable to create the output table.")
+  }
 }
 
 #' Make the SPOKEN_LANGS table
@@ -821,10 +863,13 @@ makeSpokenLangs <- function(df, updateID){
     mutate(updateID = updateID) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the SPOKEN_LANGS table.")
-
-  ## Return
-  return(spokenLangs)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(spokenLangs) & is.data.frame(spokenLangs) & nrow(spokenLangs) > 0){
+    message(paste0("Successfully created the SPOKEN_LANGS table with", nrow(sentences), " rows."))
+    return(spokenLangs)
+  }else{
+    stop("Something's wrong with the makeSpokenLangs function. Unable to create the output table.")
+  }
 }
 
 #' Make the SURVEY_COMMENTS table
@@ -872,10 +917,13 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
     filter(!is.na(comment)) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the SURVEY_COMMENTS table.")
-
-  # Return
-  return(surveyComments)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(surveyComments) & is.data.frame(surveyComments) & nrow(surveyComments) > 0){
+    message(paste0("Successfully created the SURVEY_COMMENTS table with", nrow(surveyComments), " rows."))
+    return(surveyComments)
+  }else{
+    stop("Something's wrong with the makeSurveyComments function. Unable to create the output table.")
+  }
 }
 
 #' Make the SURVEYS table
@@ -906,10 +954,13 @@ makeSurveys <- function(df, surveyID, updateID, admin, surveyName){
                         updateID = updateID) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the SURVEYS table.")
-
-  # return
-  return(surveys)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(surveys) & is.data.frame(surveys) & nrow(surveys) > 0){
+    message(paste0("Successfully created the SURVEYS table with", nrow(surveys), " rows."))
+    return(surveys)
+  }else{
+    stop("Something's wrong with the makeSurveys function. Unable to create the output table.")
+  }
 }
 
 #' Make the SURVEY_SENTENCES table
@@ -936,10 +987,13 @@ makeSurveySentences <- function(df, surveyID, updateID){
   ) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the SURVEY_SENTENCES table.")
-
-  # return
-  return(surveySentences)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(surveySentences) & is.data.frame(surveySentences) & nrow(surveySentences) > 0){
+    message(paste0("Successfully created the SURVEY_SENTENCES table with", nrow(surveySentences), " rows."))
+    return(surveySentences)
+  }else{
+    stop("Something's wrong with the makeSurveySentences function. Unable to create the output table.")
+  }
 }
 
 #' Make the TECH table
@@ -979,10 +1033,13 @@ makeTech <- function(df, updateID){
     distinct() %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created the TECH table.")
-
-  # Return
-  return(tech)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(tech) & is.data.frame(tech) & nrow(tech) > 0){
+    message(paste0("Successfully created the TECH table with", nrow(tech), " rows."))
+    return(tech)
+  }else{
+    stop("Something's wrong with the makeTech function. Unable to create the output table.")
+  }
 }
 
 #' Make the UPDATE_METADATA table
@@ -1018,8 +1075,13 @@ makeUpdateMetadata <- function(updateID, date, updater, description, con, source
                                sourceCode = sourceCode) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created UPDATE_METADATA")
-  return(updateMetadata)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(updateMetadata) & is.data.frame(updateMetadata) & nrow(updateMetadata) > 0){
+    message(paste0("Successfully created the UPDATE_METADATA table with", nrow(updateMetadata), " rows."))
+    return(updateMetadata)
+  }else{
+    stop("Something's wrong with the makeUpdateMetadata function. Unable to create the output table.")
+  }
 }
 
 #' Make the VERSION_HISTORY table
@@ -1049,7 +1111,12 @@ makeVersionHistory <- function(con, date, description){
                                description = description) %>%
     mutate_all(., .funs = as.character)
 
-  message("Successfully created VERSION_HISTORY")
-  return(versionHistory)
+  # Perform a basic check and send a success or error message.
+  if(!is.null(versionHistory) & is.data.frame(versionHistory) & nrow(versionHistory) > 0){
+    message(paste0("Successfully created the VERSION_HISTORY table with", nrow(versionHistory), " rows."))
+    return(versionHistory)
+  }else{
+    stop("Something's wrong with the makeVersionHistory function. Unable to create the output table.")
+  }
 }
 
