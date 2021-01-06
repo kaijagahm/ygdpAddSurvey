@@ -11,13 +11,20 @@
 updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = updateIDString){
   tab <- dbReadTable(con, tableName) # get the version of this table that's in the database.
 
+  # Warn if the names don't match. Bind_rows will still work intelligently, but will cause weird results when the sql script is run.
+  if(!(all(names(tab)) %in% names(tableNew))|!(all(names(tableNew)) %in% names(tab))){
+    warning("Names do not agree between the database table and the new data that you are trying to append. You may end up with NA's and/or extra columns in the database, which may cause conflicts with the SQL script.")
+  }
+
   # Add to the table, or overwrite the data, or do nothing.
   if(!(u %in% tab$updateID)){
+    message("Appending new data")
     fullTab <- bind_rows(tab %>%
                            mutate_all(., .funs = as.character),
                          tableNew %>%
                            mutate_all(., .funs = as.character)) # add the new data
   }else if(u %in% tab$updateID & overwrite == T){
+    message("updateID already present in the database table. Since `overwrite` == TRUE, removing existing data and replacing it with your new data.")
     fullTab <- tab %>%
       filter(updateID != u) %>% # remove the old data with this updateID
       mutate_all(., .funs = as.character) %>%
@@ -25,7 +32,13 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
                   mutate_all(., .funs = as.character)
                 ) # add the new data
   }else{ # if u %in% tab$updateID & overwrite == F...
+    message("updateID already present in the database table. Since `overwrite` == FALSE, making no changes to the existing database table.")
     fullTab <- tab %>% mutate_all(., .funs = as.character) # ...leave the table as is.
   }
-  return(fullTab)
+
+  if(is.data.frame(fullTab) & nrow(fullTab) > 0){
+    return(fullTab)
+  }else{
+    stop("Error: output is not a data frame and/or has 0 rows.")
+  }
 }
