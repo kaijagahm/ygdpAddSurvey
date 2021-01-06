@@ -5,7 +5,7 @@ Authors@R: person("Kaija", "Gahm", email = "kaija.gahm@aya.yale.edu",
                   role = c("aut", "cre"))
 Description: This is a package of functions designed to add a new YGDP survey to the YGDP database. There are a whole bunch of tables in the YGDP database; this package takes the raw survey data from Qualtrics and processes it to produce formatted tables.
 	Each table output is the *new* portion of the table (i.e. only the rows that come from the new survey), so after creating them you need to bind them onto the old database files and write them out again.
-Depends: R (>= 3.1.0)
+Depends: R (>= 3.5.0), hereR (>= 0.6.0)
 License: 'MIT'
 LazyData: true
 Imports:
@@ -13,7 +13,6 @@ Imports:
     dplyr,
     forcats,
     here,
-    hereR,
     magrittr,
     methods,
     lubridate,
