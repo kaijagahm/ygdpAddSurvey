@@ -36,7 +36,9 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
     fullTab <- tab %>% mutate_all(., .funs = as.character) # ...leave the table as is.
   }
 
+  # Basic check. Give an error if data isn't in the expected format.
   if(is.data.frame(fullTab) & nrow(fullTab) > 0){
+    message(paste("Finished table has ", nrow(fullTab), " rows."))
     return(fullTab)
   }else{
     stop("Error: output is not a data frame and/or has 0 rows.")
