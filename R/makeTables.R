@@ -992,15 +992,30 @@ makeTech <- function(df, updateID){
 #' @param date Date of the update, in the format YYYY-MM-DD
 #' @param updater Name of the person doing the update (first and last), e.g. Kaija Gahm
 #' @param description Description of the update. For a standard database update, it's just "added [surveyID]".
+#' @param con A connection to the existing database, created with RSQLite.
+#' @param sourceCode The name of the R script used to perform this update.
 #'@export
 #'
 # Make UPDATE_METADATA table ----------------------------------------------
-makeUpdateMetadata <- function(updateID, date, updater, description){
+makeUpdateMetadata <- function(updateID, date, updater, description, con, sourceCode){
+  # Get the existing VERSION_HISTORY TABLE
+  dbVersionHistory <- dbTable(con, "version_history")
+
+  # Get the most recent version number
+  lastVersion <- dbVersionHistory[nrow(dbVersionHistory), "versionNumber"]
+
+  # Create new version number: adding a survey updates the middle number, so we add 1 to the current middle number and then make the last number into 0.
+  newVersion <- lastVersion %>%
+    stringr::str_replace(., "(?<=\\.)\\d+(?=\\.)", as.character(as.numeric(stringr::str_extract(lastVersion, "(?<=\\.)\\d+(?=\\.)")) + 1)) %>%
+    stringr::str_replace(., "(?<=\\.)\\d+$", "0")
+
   # Make the table with the user-generated information.
   updateMetadata <- data.frame(updateID = updateID,
                                date = date,
                                updater = updater,
-                               metadata = description) %>%
+                               metadata = description,
+                               versionNumber = newVersion,
+                               sourceCode = sourceCode) %>%
     mutate_all(., .funs = as.character)
 
   message("Successfully created UPDATE_METADATA")
