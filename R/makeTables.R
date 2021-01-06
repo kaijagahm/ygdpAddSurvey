@@ -937,6 +937,9 @@ makeSurveySentences <- function(df, surveyID, updateID){
     mutate_all(., .funs = as.character)
 
   message("Successfully created the SURVEY_SENTENCES table.")
+
+  # return
+  return(surveySentences)
 }
 
 #' Make the TECH table
