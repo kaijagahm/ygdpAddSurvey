@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^.*\.data-raw$
 processShapefiles.R
+data-raw
