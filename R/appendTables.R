@@ -13,13 +13,19 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
 
   # Add to the table, or overwrite the data, or do nothing.
   if(!(u %in% tab$updateID)){
-    fullTab <- bind_rows(tab, tableNew) # add the new data
+    fullTab <- bind_rows(tab %>%
+                           mutate_all(., .funs = as.character),
+                         tableNew %>%
+                           mutate_all(., .funs = as.character)) # add the new data
   }else if(u %in% tab$updateID & overwrite == T){
     fullTab <- tab %>%
       filter(updateID != u) %>% # remove the old data with this updateID
-      bind_rows(tableNew) # add the new data
+      mutate_all(., .funs = as.character) %>%
+      bind_rows(tableNew %>%
+                  mutate_all(., .funs = as.character)
+                ) # add the new data
   }else{ # if u %in% tab$updateID & overwrite == F...
-    fullTab <- tab # ...leave the table as is.
+    fullTab <- tab %>% mutate_all(., .funs = as.character) # ...leave the table as is.
   }
   return(fullTab)
 }
