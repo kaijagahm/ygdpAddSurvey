@@ -6,7 +6,14 @@
 #' @export
 
 preprocessData <- function(df, updateID){
-  df1 <- fixNames(df)
-  df2 <- removeGeo(df1)
+  df1 <- fixNames(df) # apply the fixNames function. See documentation for `fixNames()`
+  df2 <- removeGeo(df1) # remove any extra geographic columns. See documentation for `removeGeo()`.
+
+  ## Replace "" and " " with NA
+  df2 <- df2 %>%
+    naniar::replace_with_na_all(.,
+                                condition = ~.x %in% c("", " ", "NA"))
+
+  ## Return the completed data frame
   return(df2)
 }
