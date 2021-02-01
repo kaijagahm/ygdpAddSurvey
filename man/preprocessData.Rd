@@ -4,7 +4,7 @@
 \alias{preprocessData}
 \title{Preprocess data}
 \usage{
-preprocessData(df, updateID)
+preprocessData(df)
 }
 \arguments{
 \item{df}{Raw survey data as a data frame. Must have column 'responseID'.}
