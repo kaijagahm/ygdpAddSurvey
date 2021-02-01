@@ -29,14 +29,14 @@ checkCompletion <- function(amt, qt, n = 2){
     select(-nUnanswered)
 
   ## Warn if there are duplicate completion codes in the amt file
-  if(any(duplicated(amt$Answer.surveycode))){
-    d <- which(duplicated(amt$Answer.surveycode)|duplicated(amt$Answer.surveycode, fromLast = T))
+  if(any(duplicated(amt$Answer.surveycode) & !is.na(amt$Answer.surveycode))){
+    d <- which(!is.na(amt$Answer.surveycode) & (duplicated(amt$Answer.surveycode)|duplicated(amt$Answer.surveycode, fromLast = T)))
     warning(paste0("The following rows have duplicate completion codes in the Qualtrics survey output: ", paste(d, collapse = ","), ". You might want to manually investigate these."))
   }
 
   ## Warn if there are duplicate completion codes in the qt file
-  if(any(duplicated(qt$completionCode))){
-    d <- which(duplicated(qt$completionCode)|duplicated(qt$completionCode, fromLast = T))
+  if(any(duplicated(qt$completionCode) & !is.na(qt$completionCode))){
+    d <- which(!is.na(qt$completionCode) & (duplicated(qt$completionCode)|duplicated(qt$completionCode, fromLast = T)))
     rids <- qt[d, "responseID"] # which responseID's have the duplicate completion codes
     warning(paste0("The following responseID's have duplicate completionCodes in the Qualtrics survey output: ", paste(rids, collapse = ", "), ". You might want to manually investigate these."))
   }
