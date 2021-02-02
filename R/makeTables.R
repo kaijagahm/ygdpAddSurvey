@@ -868,7 +868,7 @@ makeSpokenLangs <- function(df, updateID){
 
   # Perform a basic check and send a success or error message.
   if(!is.null(spokenLangs) & is.data.frame(spokenLangs) & nrow(spokenLangs) > 0){
-    message(paste0("Successfully created the SPOKEN_LANGS table with", nrow(sentences), " rows."))
+    message(paste0("Successfully created the SPOKEN_LANGS table with", nrow(spokenLangs), " rows."))
     return(spokenLangs)
   }else{
     stop("Something's wrong with the makeSpokenLangs function. Unable to create the output table.")
