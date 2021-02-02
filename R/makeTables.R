@@ -100,7 +100,7 @@ makeCensusCountyDemo <- function(cities, con, updateID){
 #' @export
 
 # Make CENSUS_URBAN_AREAS table -------------------------------------------
-function (cities, con, updateID) {
+makeCensusUrbanAreas <- function (cities, con, updateID) {
   message("Binding urban areas geometry and info columns...") # message so people know why this is taking so long
   ua <- cbind(uaCols, uaGeom) %>% sf::st_as_sf(., crs = 4326) %>%  # bind together the two smaller datasets into one larger one
     sf::st_transform(., crs = 2163)
