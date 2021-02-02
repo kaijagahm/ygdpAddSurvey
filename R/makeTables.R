@@ -790,6 +790,9 @@ makeSentences <- function(df, masterList, con, updateID){
     message("Successfully created the SENTENCES table.")
     message(paste0(n, " sentences out of ", tot, " were already in the database, so your final SENTENCES table contains ", tot-n, " sentences."))
     return(sentences)
+  }else if(nrow(sentences) == 0){
+    message("All sentences are already in the SENTENCES table; your newly-created table will have 0 rows.")
+    return(sentences)
   }else{
     stop("Something's wrong with the makeSentences function. Unable to create the output table.")
   }
