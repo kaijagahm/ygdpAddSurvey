@@ -100,50 +100,34 @@ makeCensusCountyDemo <- function(cities, con, updateID){
 #' @export
 
 # Make CENSUS_URBAN_AREAS table -------------------------------------------
-makeCensusUrbanAreas <- function(cities, con, updateID){
-  # Pull in the two datasets and join them together
-  ua <- cbind(uaCols, uaGeom) %>%
-    sf::st_as_sf(., crs = 4326) %>%
-    sf::st_transform(., crs = 2163) # transform to planar
-
-  if(ncol(ua) > 2){
-    print("Successfully joined urban areas datasets. Preparing to create table...")
+function (cities, con, updateID) {
+  message("Binding urban areas geometry and info columns...") # message so people know why this is taking so long
+  ua <- cbind(uaCols, uaGeom) %>% sf::st_as_sf(., crs = 4326) %>%  # bind together the two smaller datasets into one larger one
+    sf::st_transform(., crs = 2163)
+  if (ncol(ua) > 2) { # success message
+    message("Successfully joined urban areas datasets. Preparing to create table...")
   }
-
-  # Pull in CENSUS_URBAN_AREAS
-  censusUrbanAreas <- dbTable(con, "census_urban_areas")
-
-  # Check that cities has lat and long cols
-  if(!("lat" %in% names(cities) & "long" %in% names(cities))){
+  censusUrbanAreas <- dbTable(con, "census_urban_areas") # pull in the CENSUS_URBAN_AREAS table
+  if (!("lat" %in% names(cities) & "long" %in% names(cities))) { # check for lat/long cols
     stop("Argument `cities` must have 'lat' and 'long' columns.")
   }
-
-  # make the lat/long in cities into an sf point object
-  ll <- cities %>%
-    filter(!is.na(lat)) %>%
-    select(lat, long, cityID) %>%
-    sf::st_as_sf(., coords = c("long", "lat"),
-             crs = 4326, remove = FALSE) %>%
-    sf::st_transform(., crs = 2163) # transform to planar to match ua
-
-  # Join to urban areas and drop geometry
-  citiesUrbanAreaData <- st_join(ll, ua) %>% # can do this join bc both are planar/same crs
-    st_drop_geometry() %>%
+  ll <- cities %>% filter(!is.na(lat)) %>% select(lat, long,
+                                                  cityID) %>% sf::st_as_sf(., coords = c("long", "lat"),
+                                                                           crs = 4326, remove = FALSE) %>% sf::st_transform(., crs = 2163)
+  citiesUrbanAreaData <- sf::st_join(ll, ua) %>% sf::st_drop_geometry() %>%
     select(-c("lat", "long"))
-
-  # Add updateID and filter out NA's
-  cua <- citiesUrbanAreaData %>%
-    mutate(updateID = updateID) %>%
-    filter(!is.na(UACE10) & !is.na(GEOID10)) %>%
-    filter(!(cityID %in% censusUrbanAreas$cityID)) %>% # remove any cities that might already be in CENSUS_URBAN_AREAS.
-    mutate_all(., .funs = as.character)
-
-  # Perform a basic check and send a success or error message.
-  if(!is.null(cua) & is.data.frame(cua) & nrow(cua) > 0){
+  cua <- citiesUrbanAreaData %>% mutate(updateID = updateID) %>% # remove NA's
+    filter(!is.na(UACE10) & !is.na(GEOID10)) %>% filter(!(cityID %in%
+                                                            censusUrbanAreas$cityID)) %>% mutate_all(., .funs = as.character)
+  if (!is.null(cua) & is.data.frame(cua) & nrow(cua) > 0) {
     message(paste0("Successfully created the CENSUS_URBAN_AREAS table with ",
                    nrow(cua), " rows."))
     return(cua)
-  }else{
+  }else if(nrow(cua) == 0){
+    message("Either all rows are already present in CENSUS_URBAN_AREAS or your cities did not intersect the US urban areas polygons (e.g. international cities). Output will have 0 rows.")
+    return(cua)
+  }
+  else {
     stop("Something's wrong with the makeCensusUrbanAreas function. Unable to create the output table.")
   }
 }
