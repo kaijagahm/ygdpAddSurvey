@@ -508,8 +508,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   # Perform a basic check and send a success or error message.
   if(length(listOut) == 3 & !is.null(listOut[[1]]) & !is.null(listOut[[2]]) & !is.null(listOut[[3]])){
-    message(paste0("Successfully created the CONSTRUCTIONS table with ",
-                   nrow(constructions), " rows."))
+    message(paste0("Successfully created the CITIES/CITIES_REF/DEMO_GEO table list with ", nrow(listOut[[1]]), ", ", nrow(listOut[[2]]), ", and ", nrow(listOut[[3]]), " rows, respectively."))
     return(listOut)
   }else{
     stop("Something's wrong with the makeDemoGeo function. There may have been a problem creating the output list, or one of the list elements is null.")
