@@ -169,7 +169,11 @@ makeComments <- function(df, questions, updateID){
     message(paste0("Successfully created the COMMENTS table with ",
                    nrow(comments), " rows."))
     return(comments)
-  }else{
+  }else if(nrow(comments) == 0){
+    warning("Your output has 0 rows.")
+    return(comments)
+  }
+  else{
     stop("Something's wrong with the makeComments function. Unable to create the output table.")
   }
 }
@@ -224,6 +228,9 @@ makeConstructions <- function(constructions, con, updateID){
   if(!is.null(constructions) & is.data.frame(constructions) & nrow(constructions) > 0){
     message(paste0("Successfully created the CONSTRUCTIONS table with ",
                    nrow(constructions), " rows."))
+    return(constructions)
+  }else if(nrow(constructions) == 0){
+    warning("Your output has 0 rows.")
     return(constructions)
   }else{
     stop("Something's wrong with the makeConstructions function. Unable to create the output table.")
@@ -570,7 +577,11 @@ makeDialectRegions <- function(cities, updateID){
     message(paste0("Successfully created the DIALECT_REGIONS table with ",
                    nrow(dialect_regions), " rows."))
     return(dialect_regions)
-  }else{
+  }else if(nrow(dialect_regions) == 0){
+    message("Your output has 0 rows. Perhaps none of the cities intersected with the given dialect regions?")
+    return(dialect_regions)
+  }
+  else{
     stop("Something's wrong with the makeDialectRegions function. Unable to create the output table.")
   }
 }
@@ -619,6 +630,9 @@ makeQuestions <- function(df, qids, surveyID, updateID){
     message(paste0("Successfully created the QUESTIONS table with ",
                    nrow(questions), " rows."))
     return(questions)
+  }else if(nrow(questions) == 0){
+    warning("Your output has zero rows.")
+    return(questions)
   }else{
     stop("Something's wrong with the makeQuestions function. Unable to create the output table.")
   }
@@ -663,6 +677,9 @@ makeRatings <- function(df, questions, surveyID, updateID){
     message(paste0("Successfully created the RATINGS table with ",
                    nrow(ratings), " rows."))
     return(ratings)
+  }else if(nrow(ratings) == 0){
+    warning("Your output has 0 rows.")
+    return(ratings)
   }else{
     stop("Something's wrong with the makeRatings function. Unable to create the output table.")
   }
@@ -695,6 +712,9 @@ makeResponses <- function(df, updateID, surveyID){
   if(!is.null(responses) & is.data.frame(responses) & nrow(responses) > 0){
     message(paste0("Successfully created the RESPONSES table with ",
                    nrow(responses), " rows."))
+    return(responses)
+  }else if(nrow(responses) == 0){
+    warning("Your output has 0 rows.")
     return(responses)
   }else{
     stop("Something's wrong with the makeResponses function. Unable to create the output table.")
@@ -853,6 +873,9 @@ makeSpokenLangs <- function(df, updateID){
   if(!is.null(spokenLangs) & is.data.frame(spokenLangs) & nrow(spokenLangs) > 0){
     message(paste0("Successfully created the SPOKEN_LANGS table with", nrow(spokenLangs), " rows."))
     return(spokenLangs)
+  }else if(nrow(spokenLangs == 0)){
+    warning("Your output has 0 rows; perhaps no participants spoke additional languages?")
+    return(spokenLangs)
   }else{
     stop("Something's wrong with the makeSpokenLangs function. Unable to create the output table.")
   }
@@ -907,6 +930,9 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
   if(!is.null(surveyComments) & is.data.frame(surveyComments) & nrow(surveyComments) > 0){
     message(paste0("Successfully created the SURVEY_COMMENTS table with", nrow(surveyComments), " rows."))
     return(surveyComments)
+  }else if(nrow(surveyComments) == 0){
+    warning("Your output has 0 rows. Perhaps nobody had any comments?")
+    return(surveyComments)
   }else{
     stop("Something's wrong with the makeSurveyComments function. Unable to create the output table.")
   }
@@ -944,6 +970,9 @@ makeSurveys <- function(df, surveyID, updateID, admin, surveyName){
   if(!is.null(surveys) & is.data.frame(surveys) & nrow(surveys) > 0){
     message(paste0("Successfully created the SURVEYS table with", nrow(surveys), " rows."))
     return(surveys)
+  }else if(nrow(surveys) == 0){
+    warning("Your output has 0 rows.")
+    return(surveys)
   }else{
     stop("Something's wrong with the makeSurveys function. Unable to create the output table.")
   }
@@ -976,6 +1005,9 @@ makeSurveySentences <- function(df, surveyID, updateID){
   # Perform a basic check and send a success or error message.
   if(!is.null(surveySentences) & is.data.frame(surveySentences) & nrow(surveySentences) > 0){
     message(paste0("Successfully created the SURVEY_SENTENCES table with", nrow(surveySentences), " rows."))
+    return(surveySentences)
+  }else if(nrow(surveySentences) == 0){
+    warning("Your output has 0 rows.")
     return(surveySentences)
   }else{
     stop("Something's wrong with the makeSurveySentences function. Unable to create the output table.")
@@ -1023,6 +1055,9 @@ makeTech <- function(df, updateID){
   if(!is.null(tech) & is.data.frame(tech) & nrow(tech) > 0){
     message(paste0("Successfully created the TECH table with", nrow(tech), " rows."))
     return(tech)
+  }else if(nrow(tech) == 0){
+    warning("Your output has 0 rows.")
+    return(tech)
   }else{
     stop("Something's wrong with the makeTech function. Unable to create the output table.")
   }
@@ -1065,7 +1100,7 @@ makeUpdateMetadata <- function(updateID, date, updater, description, con, source
   if(!is.null(updateMetadata) & is.data.frame(updateMetadata) & nrow(updateMetadata) > 0){
     message(paste0("Successfully created the UPDATE_METADATA table with", nrow(updateMetadata), " rows."))
     return(updateMetadata)
-  }else{
+  }else{ # note that there's no case here where a zero-row output makes sense, since the updateID should always be added.
     stop("Something's wrong with the makeUpdateMetadata function. Unable to create the output table.")
   }
 }
@@ -1101,7 +1136,7 @@ makeVersionHistory <- function(con, date, description){
   if(!is.null(versionHistory) & is.data.frame(versionHistory) & nrow(versionHistory) > 0){
     message(paste0("Successfully created the VERSION_HISTORY table with", nrow(versionHistory), " rows."))
     return(versionHistory)
-  }else{
+  }else{ # note that there's no case here where a zero-row output makes sense, since the version number should always be added.
     stop("Something's wrong with the makeVersionHistory function. Unable to create the output table.")
   }
 }
