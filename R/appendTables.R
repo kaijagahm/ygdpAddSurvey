@@ -12,7 +12,7 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
   tab <- dbReadTable(con, tableName) # get the version of this table that's in the database.
 
   # Warn if the names don't match. Bind_rows will still work intelligently, but will cause weird results when the sql script is run.
-  if(!(all(names(tab)) %in% names(tableNew))|!(all(names(tableNew)) %in% names(tab))){
+  if(!setequal(names(tab), names(tableNew))){
     warning("Names do not agree between the database table and the new data that you are trying to append. You may end up with NA's and/or extra columns in the database, which may cause conflicts with the SQL script.")
   }
 
