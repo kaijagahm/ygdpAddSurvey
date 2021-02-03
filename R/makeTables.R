@@ -456,7 +456,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
   dgRest <- df %>%
     select(responseID, currentYears, raisedYears, gender, age, income, race, raceOther, education, nLangs) %>%
     mutate(updateID = updateID,
-           income = as.numeric(income)) %>%
+           income = suppressWarnings(as.numeric(as.character(income)))) %>%
     mutate_at(vars(gender, race, education, raceOther), .funs = tolower)
 
   ## add raceCats column
