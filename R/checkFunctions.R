@@ -68,6 +68,8 @@ checkSentenceCommentNumbers <- function(rawData){
   # Compare lengths: is the number of comments equal to the number of sentences?
   if(length(comments) != length(ts) + length(cg) + length(cu)){
     warning(paste0("\n WARNING! The number of comments columns does not match the number of sentence columns. Found ", length(comments), " comments columns and ", length(ts) + length(cg) + length(cu), " sentence columns. If there is sentence or comment data that was not correctly mislabeled, it will not end up in the database!"))
+  }else{
+    message("SUCCESS! The number of comments columns matches the number of sentence columns.")
   }
 }
 
