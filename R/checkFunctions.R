@@ -17,11 +17,11 @@ checkRawDupNames <- function(rawData){
 
 #' Check how many TS, CU, CG, and comments columns the data contains
 #'
-#' This function checks the first row of the raw data, which will become the column names after cleaning. It reports how many sentence columns (marked with "TS_", "CU_", and "CG_") it finds, as well as how many comments columns (marked with "comments"). If the number of sentence columns doesn't match the number of comments columns, the function throws a warning.
+#' This function checks the first row of the raw data, which will become the column names after cleaning. It reports how many sentence columns (marked with "TS_", "CU_", and "CG_") it finds, as well as how many comments columns (marked with "comments"). You need to manually look at these numbers to make sure they make sense.
 #' @param rawData The raw Qualtrics output.
 #' @export
 
-checkRawSentenceNames <- function(rawData){
+howManySentences <- function(rawData){
   message("Checking sentence and comment column names: \n")
   namesToBe <- rawData %>%
     dplyr::slice(1) %>%
@@ -45,9 +45,29 @@ checkRawSentenceNames <- function(rawData){
   message(paste0("Found ", length(comments), " comments columns at the following positions: ",
                  paste(comments, collapse = ", ")))
   message("\n Do these column counts make sense? If not, check your raw data to make sure that you correctly labeled the questions in Qualtrics according to the instructions in the survey format guidelines.")
+}
 
+#' Check that the number of comments columns matches the number of sentence columns
+#'
+#' This function checks that the number of columns whose name-to-be (i.e. the first row of the raw data) starts with "comments_" matches the number that start with "TS_", "CU_", or "CG_", as per the instructions in the survey format guidelines document. If there's a mismatch, the function throws a warning that you may end up with some missing data.
+#' @param rawData The raw Qualtrics output.
+#' @export
+
+checkSentenceCommentNumbers <- function(rawData){
+  # Extract names-to-be
+  namesToBe <- rawData %>%
+    dplyr::slice(1) %>%
+    purrr::flatten_chr()
+
+  # Find the names corresponding to each of TS_, CG_, CU_, and comments_
+  ts <- which(grepl("TS\\_", namesToBe))
+  cg <- which(grepl("CG\\_", namesToBe))
+  cu <- which(grepl("CU\\_", namesToBe))
+  comments <- which(grepl("comments\\_", namesToBe))
+
+  # Compare lengths: is the number of comments equal to the number of sentences?
   if(length(comments) != length(ts) + length(cg) + length(cu)){
-    warning(paste0("\n The number of comments columns does not match the number of sentence columns. Found ", length(comments), " comments columns and ", length(ts) + length(cg) + length(cu), " sentence columns."))
+    warning(paste0("\n WARNING! The number of comments columns does not match the number of sentence columns. Found ", length(comments), " comments columns and ", length(ts) + length(cg) + length(cu), " sentence columns. If there is sentence or comment data that was not correctly mislabeled, it will not end up in the database!"))
   }
 }
 
