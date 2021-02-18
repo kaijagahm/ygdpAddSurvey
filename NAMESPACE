@@ -2,6 +2,10 @@
 
 export("%>%")
 export(checkCompletion)
+export(checkMasterListColumns)
+export(checkMasterListSentenceIDs)
+export(checkRawDupNames)
+export(checkRawSentenceNames)
 export(fixNames)
 export(makeCensusCountyDemo)
 export(makeCensusUrbanAreas)

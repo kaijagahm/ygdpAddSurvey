@@ -515,6 +515,16 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
 # Make DIALECT_REGIONS table ----------------------------------------------
 makeDialectRegions <- function(cities, updateID){
+  # Check that `cities` contains the correct columns
+  targetCols <- c("lat", "long", "cityID")
+  if(!all(targetCols %in% names(cities))){
+    stop(paste0("`cities` must contain the following column names: ",
+                paste(targetCols, collapse = ","),
+                ". The following column names are missing: ",
+                paste(targetCols[which(!(targetCols %in% names(cities)))], collapse = ","),
+                "."))
+  }
+
   # Make the table
   ll <- cities %>%
     select(lat, long, cityID) %>%
@@ -650,12 +660,17 @@ makeQuestions <- function(df, qids, surveyID, updateID){
 # Make RATINGS table ------------------------------------------------------
 makeRatings <- function(df, questions, surveyID, updateID){
   justSentences <- df %>%
-    select(responseID, contains("TS", ignore.case = F), contains("CU", ignore.case = F), contains("CG", ignore.case = F)) %>%
+    select(responseID,
+           contains("TS", ignore.case = F),
+           contains("CU", ignore.case = F),
+           contains("CG", ignore.case = F)) %>%
     select(-contains("comments"))
 
   # pivot longer
   ratings <- justSentences %>%
-    pivot_longer(cols = -responseID, names_to = "sentenceID", values_to = "rating") %>%
+    pivot_longer(cols = -responseID,
+                 names_to = "sentenceID",
+                 values_to = "rating") %>%
     left_join(questions %>%
                 select(questionID, questionText),
               by = c("sentenceID" = "questionText")) %>%
@@ -736,7 +751,9 @@ makeSentences <- function(df, masterList, con, updateID){
   cuIDs <- df %>%
     select(contains("CU_", ignore.case = F)) %>%
     names() %>%
-    stringr::str_extract(., "(?<=CU\\_).*")
+    stringr::str_extract(., "(?<=CU\\_).*") # select everything after the "CU_"
+
+  # Check whether the CU sentenceID's contain characters other than numbers and '.'
   if(!(all(grepl("^[0-9,\\.]*$", cuIDs)))){
     message(paste0("CU sentenceID's contain characters other than numbers and '.' The offenders are: ", paste(cuIDs[!(grepl("^[0-9,\\.]*$", cuIDs))], collapse = ", "),  ". Consider whether this is a problem, and fix your sentence column names if need be."))
   }
@@ -745,7 +762,9 @@ makeSentences <- function(df, masterList, con, updateID){
   cgIDs <- df %>%
     select(contains("CG_", ignore.case = F)) %>%
     names() %>%
-    stringr::str_extract(., "(?<=CG\\_).*")
+    stringr::str_extract(., "(?<=CG\\_).*") # select everything after the "CG_"
+
+  # Check whether the CG sentenceID's contain characters other than numbers and '.'
   if(!(all(grepl("^[0-9,\\.]*$", cgIDs)))){
     message(paste0("CG sentenceID's contain characters other than numbers and '.' The offenders are: ",
                    paste(cgIDs[!(grepl("^[0-9,\\.]*$", cgIDs))], collapse = ", "),
@@ -756,7 +775,9 @@ makeSentences <- function(df, masterList, con, updateID){
   tsIDs <- df %>%
     select(contains("TS_", ignore.case = F)) %>%
     names() %>%
-    stringr::str_extract(., "(?<=TS\\_).*")
+    stringr::str_extract(., "(?<=TS\\_).*") # select everything after the "TS_"
+
+  # Check whether the TS sentenceID's contain characters other than numbers and '.'
   if(!(all(grepl("^[0-9,\\.]*$", tsIDs)))){
     message(paste0("TS sentenceID's contain characters other than numbers and '.' The offenders are: ",
                    paste(tsIDs[!(grepl("^[0-9,\\.]*$", tsIDs))], collapse = ", "),
@@ -810,6 +831,12 @@ makeSentences <- function(df, masterList, con, updateID){
 
 # Make the SPOKEN_LANGS table ---------------------------------------------
 makeSpokenLangs <- function(df, updateID){
+  # Check for the `responseID` and `spokenLangs` columns
+  targets <- c("responseID", "spokenLangs")
+  if(!all(targets %in% names(df))){
+    stop("df must contain columns `responseID` and `spokenLangs`.")
+  }
+
   # grab responseID and languages spoken
   df <- df %>%
     select(responseID, spokenLangs) %>%
