@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeTables.R
 \name{makeTech}
 \alias{makeTech}
-\title{Make the TECH table}
+\title{This function creates the TECH database table from raw survey data.}
 \usage{
 makeTech(df, updateID)
 }
