@@ -331,7 +331,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   # 4. Grab the unique localities that weren't already geocoded
   unique_locs <- locs %>%
-    filter(is.na(cityID)) %>% # only the ones that didn't already match
+    {if("cityID" %in% names(.)) filter(is.na(cityID)) else .} %>% # only the ones that didn't already match
     select(togeocode) %>%
     distinct() %>% # this is important to avoid repeat geocoding!
     filter(!is.na(togeocode), togeocode != " ", togeocode != "", togeocode != "  ") %>% # remove blank strings
@@ -406,6 +406,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   ### Patch in the cityID's
   locs <- locs %>%
+    {if(!"cityID" %in% names(.)) mutate(., cityID = NA_character_) else .} %>%
     # Add new cityID's to the ones that still had NA's
     mutate(cityID = case_when(is.na(cityID) ~ cityIDNew,
                               TRUE ~ cityID)) %>%
@@ -1041,13 +1042,11 @@ makeSurveySentences <- function(df, surveyID, updateID){
   }
 }
 
-#' Make the TECH table
-#'
+# Make the TECH table -----------------------------------------------------
 #' This function creates the TECH database table from raw survey data.
 #' @param df Raw survey data as a data frame. Must have columns 'responseID', 'consent', and 'completionCode'.
 #' @param updateID Character string that will become the `updateID` column for this table. For example, "survey11Add" for Survey 11.
 #' @export
-
 makeTech <- function(df, updateID){
   # check for essential columns
   ## Must have responseID, consent, completionCode.
@@ -1061,11 +1060,10 @@ makeTech <- function(df, updateID){
     mutate_all(.funs = as.character)
 
   # initialize df
-  tech <- df %>%
-    select(any_of(c("responseID", "dateTimeStart", "dateTimeEnd", "ipAddress", "progress",
-                    "durationSeconds", "finished", "recordedDate", "consent", "browser",
-                    "version", "operatingSystem", "resolution", "hasAmazonID", "completionCode",
-                    "locationLat", "locationLong", "userLanguage"))) %>%
+  tech <- df[,names(df)[names(df) %in% c("responseID", "dateTimeStart", "dateTimeEnd", "ipAddress", "progress",
+                                   "durationSeconds", "finished", "recordedDate", "consent", "browser",
+                                   "version", "operatingSystem", "resolution", "hasAmazonID", "completionCode",
+                                   "locationLat", "locationLong", "userLanguage")]] %>%
     mutate(updateID = updateID) # user defines the updateID
 
   # set hasAmazonID to "No" if it's NA
@@ -1077,6 +1075,10 @@ makeTech <- function(df, updateID){
   tech <- tech %>%
     distinct() %>%
     mutate_all(., .funs = as.character)
+
+  # Convert any "" to NA
+  tech <- tech %>%
+    mutate(across(everything(), .fns = function(x) na_if(., "")))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(tech) & is.data.frame(tech) & nrow(tech) > 0){
