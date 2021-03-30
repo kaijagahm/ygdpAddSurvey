@@ -36,8 +36,7 @@ makeCensusCountyDemo <- function(cities, con, updateID){
                 rename(countyNameCensus = NAME,
                        stateNameCensus = STATE_NAME),
               by = "cityID") %>%
-    mutate_at(vars(stateName, stateNameCensus, countyName, countyNameCensus),
-              .funs = as.character)
+    mutate(across(c(stateName, stateNameCensus, countyName, countyNameCensus), as.character))
 
   # Keep ESRI state and county names
   cities <- cities %>%
@@ -351,7 +350,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
   unique_locs <- unique_locs %>%
     left_join(geocoded, by = "id") %>%
     select(-id) %>%
-    mutate_at(vars(lat, long), .funs = as.character)
+    mutate(across(c(lat, long), as.character))
 
   # 7. Find matches in CITIES
   ## Are there any that match by lat/long?
@@ -458,7 +457,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
     select(responseID, currentYears, raisedYears, gender, age, income, race, raceOther, education, nLangs) %>%
     mutate(updateID = updateID,
            income = suppressWarnings(as.numeric(as.character(income)))) %>%
-    mutate_at(vars(gender, race, education, raceOther), .funs = tolower)
+    mutate(across(c(gender, race, education, raceOther), tolower))
 
   ## add raceCats column
   dgRest <- dgRest %>%
