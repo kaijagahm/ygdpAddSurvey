@@ -60,7 +60,7 @@ makeCensusCountyDemo <- function(cities, con, updateID){
   # Reorder the columns
   citiesOut <- cities %>%
     select(cityID, cityName, stateID, stateName, countyName, countryID, lat, long, postalCode, updateID)%>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # --- Now for the actual census info
   censusCountyDemoOut <- citiesCountyData %>%
@@ -74,7 +74,7 @@ makeCensusCountyDemo <- function(cities, con, updateID){
   # remove any rows that have cityID's already present in ccd, just to make sure we don't introduce repeats.
   censusCountyDemoOut <- censusCountyDemoOut %>%
     filter(!(cityID %in% censusCountyDemo$cityID)) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # List output
   listOut <- list("CITIES" = citiesOut,
@@ -118,7 +118,7 @@ makeCensusUrbanAreas <- function (cities, con, updateID) {
     select(-c("lat", "long"))
   cua <- citiesUrbanAreaData %>% mutate(updateID = updateID) %>% # remove NA's
     filter(!is.na(UACE10) & !is.na(GEOID10)) %>% filter(!(cityID %in%
-                                                            censusUrbanAreas$cityID)) %>% mutate_all(., .funs = as.character)
+                                                            censusUrbanAreas$cityID)) %>% mutate(across(everything(), as.character))
   if (!is.null(cua) & is.data.frame(cua) & nrow(cua) > 0) {
     message(paste0("Successfully created the CENSUS_URBAN_AREAS table with ",
                    nrow(cua), " rows."))
@@ -162,7 +162,7 @@ makeComments <- function(df, questions, updateID){
   comments <- comments %>%
     mutate(comment = stringr::str_replace_all(comment, "\"", "'"),
            comment = stringr::str_replace_all(comment, "\n", "")) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(comments) & is.data.frame(comments) & nrow(comments) > 0){
@@ -222,7 +222,7 @@ makeConstructions <- function(constructions, con, updateID){
   # Add updateID
   constructions <- constructions %>%
     mutate(updateID = updateID) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(constructions) & is.data.frame(constructions) & nrow(constructions) > 0){
@@ -292,7 +292,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
            country = tolower(country),
            togeocode = paste(city, state, country, sep = " ")) %>%
     mutate(togeocode = stringr::str_replace_all(togeocode, "\\sNA|\\sNA\\s|NA\\s", "")) %>%
-    mutate_all(as.character) %>%
+    mutate(across(everything(), as.character)) %>%
     mutate(state = stringr::str_replace_all(state, "outside the united states", ""),
            togeocode = stringr::str_replace_all(togeocode, "outside the united states", "")) %>%
     mutate(togeocode = stringr::str_replace_all(togeocode, "^\\s|\\s$", "")) %>%
@@ -422,7 +422,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   # Make CITIES output
   citiesOut <- toAddToCities  %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Get the new rows to add to CITIES_REF
   citiesRefToAdd <- locs %>%
@@ -439,7 +439,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
     ungroup()
 
   citiesRefOut <- citiesRefToAdd %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Make DEMO_GEO output
   dg <- locs %>%
@@ -491,7 +491,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
     select(responseID, currentCityID, raisedCityID, motherCityID, fatherCityID, currentYears, raisedYears, gender, age, income, race, raceCats, education, nLangs, updateID) %>%
     mutate(raisedYears = as.numeric(raisedYears), # *** Add to sql script: these cols should be numeric
            currentYears = as.numeric(currentYears)) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Output demo_geo, cities, and cities_ref as a list
   listOut <- list("CITIES" = citiesOut,
@@ -634,7 +634,7 @@ makeQuestions <- function(df, qids, surveyID, updateID){
   # Reorder the cols
   questions <- questions %>%
     select(questionID, questionText, surveyID, stimulusType, scaleOptions, problems, updateID) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(questions) & is.data.frame(questions) & nrow(questions) > 0){
@@ -686,7 +686,7 @@ makeRatings <- function(df, questions, surveyID, updateID){
   # Remove NA ratings
   ratings <- ratings %>%
     filter(!is.na(ratings)) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(ratings) & is.data.frame(ratings) & nrow(ratings) > 0){
@@ -722,7 +722,7 @@ makeResponses <- function(df, updateID, surveyID){
     mutate(surveyID = surveyID,
            updateID = updateID) %>%
     distinct() %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(responses) & is.data.frame(responses) & nrow(responses) > 0){
@@ -808,7 +808,7 @@ makeSentences <- function(df, masterList, con, updateID){
 
   sentences <- sentences %>% # remove sentenceID's that are already represented in the database
     filter(!(sentenceID %in% s$sentenceID)) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(sentences) & is.data.frame(sentences) & nrow(sentences) > 0){
@@ -895,7 +895,7 @@ makeSpokenLangs <- function(df, updateID){
   ## add updateID column
   spokenLangs <- df %>%
     mutate(updateID = updateID) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(spokenLangs) & is.data.frame(spokenLangs) & nrow(spokenLangs) > 0){
@@ -952,7 +952,7 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
   # Remove any where the comments field is blank
   surveyComments <- surveyComments %>%
     filter(!is.na(comment)) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(surveyComments) & is.data.frame(surveyComments) & nrow(surveyComments) > 0){
@@ -981,7 +981,7 @@ makeSurveys <- function(df, surveyID, updateID, admin, surveyName){
   # Get start and end dates
   forDates <- df %>%
     select(dateTimeStart, dateTimeEnd) %>%
-    mutate_all(.funs = function(x) lubridate::parse_date_time(x, orders = c("ymd_HMS"))) # parse_date_time guesses the format
+    mutate(across(everything(), ~lubridate::parse_date_time(.x, orders = c("ymd_HMS"))))
   dateReleased <- min(forDates$dateTimeStart)
   dateClosed <- max(forDates$dateTimeEnd)
 
@@ -992,7 +992,7 @@ makeSurveys <- function(df, surveyID, updateID, admin, surveyName){
                         dateClosed = dateClosed,
                         administrator = admin,
                         updateID = updateID) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(surveys) & is.data.frame(surveys) & nrow(surveys) > 0){
@@ -1028,7 +1028,7 @@ makeSurveySentences <- function(df, surveyID, updateID){
     surveyID = surveyID,
     updateID = updateID
   ) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(surveySentences) & is.data.frame(surveySentences) & nrow(surveySentences) > 0){
@@ -1057,7 +1057,7 @@ makeTech <- function(df, updateID){
 
   # turn all cols to character, for consistency
   df <- df %>%
-    mutate_all(.funs = as.character)
+    mutate(across(everything(), as.character))
 
   # initialize df
   tech <- df[,names(df)[names(df) %in% c("responseID", "dateTimeStart", "dateTimeEnd", "ipAddress", "progress",
@@ -1074,7 +1074,7 @@ makeTech <- function(df, updateID){
   # Only distinct rows, in case of any repeats
   tech <- tech %>%
     distinct() %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Convert any "" to NA
   tech <- tech %>%
@@ -1123,7 +1123,7 @@ makeUpdateMetadata <- function(updateID, date, updater, description, con, source
                                metadata = description,
                                versionNumber = newVersion,
                                sourceCode = sourceCode) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(updateMetadata) & is.data.frame(updateMetadata) & nrow(updateMetadata) > 0){
@@ -1159,7 +1159,7 @@ makeVersionHistory <- function(con, date, description){
   versionHistory <- data.frame(versionNumber = newVersion,
                                date = date,
                                description = description) %>%
-    mutate_all(., .funs = as.character)
+    mutate(across(everything(), as.character))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(versionHistory) & is.data.frame(versionHistory) & nrow(versionHistory) > 0){
