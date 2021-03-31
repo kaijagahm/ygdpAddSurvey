@@ -954,11 +954,11 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
 
   # Remove any where the comments field is blank
   surveyComments <- surveyComments %>%
-    filter(!is.na(comment)) %>%
     mutate(across(everything(), as.character)) %>%
     mutate(across(everything(), ~na_if(.x, "\n"))) %>%
     mutate(across(everything(), ~na_if(.x, ""))) %>%
-    mutate(across(everything(), ~na_if(.x, " ")))
+    mutate(across(everything(), ~na_if(.x, " "))) %>%
+    filter(!is.na(comment))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(surveyComments) & is.data.frame(surveyComments) & nrow(surveyComments) > 0){

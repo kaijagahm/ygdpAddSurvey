@@ -41,6 +41,16 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
   fullTab <- fullTab %>%
     mutate(across(everything(), ~str_replace_all(.x, "\n", "")))
 
+  # Replace any double quotes with single quotes
+  fullTab <- fullTab %>%
+    mutate(across(everything(), ~str_replace_all(.x, "\"", "\'")))
+
+  # Convert any blank cells to NA
+  fullTab <- fullTab %>%
+    mutate(across(everything(), ~na_if(.x, ""))) %>%
+    mutate(across(everything(), ~na_if(.x, " "))) %>%
+    mutate(across(everything(), ~na_if(.x, "NA")))
+
   # Basic check. Give an error if data isn't in the expected format.
   if(is.data.frame(fullTab) & nrow(fullTab) > 0){
     message(paste("Finished table has ", nrow(fullTab), " rows."))
