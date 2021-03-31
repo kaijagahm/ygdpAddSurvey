@@ -161,7 +161,10 @@ makeComments <- function(df, questions, updateID){
   comments <- comments %>%
     mutate(comment = stringr::str_replace_all(comment, "\"", "'"),
            comment = stringr::str_replace_all(comment, "\n", "")) %>%
-    mutate(across(everything(), as.character))
+    mutate(across(everything(), as.character)) %>%
+    mutate(across(everything(), ~na_if(.x, "\n"))) %>%
+    mutate(across(everything(), ~na_if(.x, ""))) %>%
+    mutate(across(everything(), ~na_if(.x, " ")))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(comments) & is.data.frame(comments) & nrow(comments) > 0){
@@ -700,6 +703,7 @@ makeRatings <- function(df, questions, surveyID, updateID){
   }
 }
 
+# Make RESPONSES table ----------------------------------------------------
 #' Make the RESPONSES table
 #'
 #' This function creates the RESPONSES database table from raw survey data.
@@ -908,6 +912,7 @@ makeSpokenLangs <- function(df, updateID){
   }
 }
 
+# Make SURVEY_COMMENTS table ----------------------------------------------
 #' Make the SURVEY_COMMENTS table
 #'
 #' This function creates the SURVEY_COMMENTS database table from raw survey data.
@@ -951,7 +956,10 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
   # Remove any where the comments field is blank
   surveyComments <- surveyComments %>%
     filter(!is.na(comment)) %>%
-    mutate(across(everything(), as.character))
+    mutate(across(everything(), as.character)) %>%
+    mutate(across(everything(), ~na_if(.x, "\n"))) %>%
+    mutate(across(everything(), ~na_if(.x, ""))) %>%
+    mutate(across(everything(), ~na_if(.x, " ")))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(surveyComments) & is.data.frame(surveyComments) & nrow(surveyComments) > 0){
