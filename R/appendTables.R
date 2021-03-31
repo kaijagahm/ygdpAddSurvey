@@ -20,20 +20,21 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
   if(!(u %in% tab$updateID)){
     message("Appending new data")
     fullTab <- bind_rows(tab %>%
-                           mutate_all(., .funs = as.character),
+                           mutate(across(everything(), as.character)),
                          tableNew %>%
-                           mutate_all(., .funs = as.character)) # add the new data
+                           mutate(across(everything(), as.character))
+    )
   }else if(u %in% tab$updateID & overwrite == T){
     message("updateID already present in the database table. Since `overwrite` == TRUE, removing existing data and replacing it with your new data.")
     fullTab <- tab %>%
       filter(updateID != u) %>% # remove the old data with this updateID
-      mutate_all(., .funs = as.character) %>%
+      mutate(across(everything(), as.character)) %>%
       bind_rows(tableNew %>%
-                  mutate_all(., .funs = as.character)
-                ) # add the new data
+                  mutate(across(everything(), as.character))
+      ) # add the new data
   }else{ # if u %in% tab$updateID & overwrite == F...
     message("updateID already present in the database table. Since `overwrite` == FALSE, making no changes to the existing database table.")
-    fullTab <- tab %>% mutate_all(., .funs = as.character) # ...leave the table as is.
+    fullTab <- tab %>% mutate(across(everything(), as.character)) # ...leave the table as is.
   }
 
   # Basic check. Give an error if data isn't in the expected format.
