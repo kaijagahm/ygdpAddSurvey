@@ -940,8 +940,7 @@ makeSurveyComments <- function(df, surveyID, qids, updateID){
   if("generalComments" %in% qids$colName){
     a <- qids %>%
       filter(colName == "generalComments") %>%
-      pull(questionIDRaw) %>%
-      stringr::str_extract("QID\\d+")
+      pull(questionIDRaw)
     b <- paste0(surveyID, a) # make the full questionID string
   }else{
     b <- NA
