@@ -330,7 +330,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   # 4. Grab the unique localities that weren't already geocoded
   unique_locs <- locs %>%
-    {if("cityID" %in% names(.)) filter(is.na(cityID)) else .} %>% # only the ones that didn't already match
+    {if("cityID" %in% names(.)) filter(., is.na(cityID)) else .} %>% # only the ones that didn't already match
     select(togeocode) %>%
     distinct() %>% # this is important to avoid repeat geocoding!
     filter(!is.na(togeocode), togeocode != " ", togeocode != "", togeocode != "  ") %>% # remove blank strings
