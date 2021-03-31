@@ -37,6 +37,10 @@ updateTable <- function(tableName, tableNew, overwrite = F, cn = con, u = update
     fullTab <- tab %>% mutate(across(everything(), as.character)) # ...leave the table as is.
   }
 
+  # Replace any newline characters in fullTab with "".
+  fullTab <- fullTab %>%
+    mutate(across(everything(), ~str_replace_all(.x, "\n", "")))
+
   # Basic check. Give an error if data isn't in the expected format.
   if(is.data.frame(fullTab) & nrow(fullTab) > 0){
     message(paste("Finished table has ", nrow(fullTab), " rows."))
