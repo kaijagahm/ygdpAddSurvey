@@ -101,7 +101,7 @@ makeCensusCountyDemo <- function(cities, con, updateID){
 # Make CENSUS_URBAN_AREAS table -------------------------------------------
 makeCensusUrbanAreas <- function (cities, con, updateID) {
   message("Binding urban areas geometry and info columns...") # message so people know why this is taking so long
-  ua <- cbind(uaCols, uaGeom) %>% sf::st_as_sf(., crs = 4326) %>%  # bind together the two smaller datasets into one larger one
+  ua <- cbind(uaCols, uaGeom) %>% suppressWarnings(sf::st_as_sf(., crs = 4326)) %>%  # bind together the two smaller datasets into one larger one
     sf::st_transform(., crs = 2163)
   if (ncol(ua) > 2) { # success message
     message("Successfully joined urban areas datasets. Preparing to create table...")
@@ -1077,7 +1077,7 @@ makeTech <- function(df, updateID){
 
   # Convert any "" to NA
   tech <- tech %>%
-    mutate(across(everything(), .fns = function(x) na_if(., "")))
+    mutate(across(everything(), .fns = ~na_if(.x, "")))
 
   # Perform a basic check and send a success or error message.
   if(!is.null(tech) & is.data.frame(tech) & nrow(tech) > 0){
