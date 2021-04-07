@@ -383,6 +383,7 @@ makeDemoGeo <- function(df, updateID, key, con, overwrite = T){
 
   # 8. Add new cities to CITIES
   maxID <- cities %>%
+    filter(!is.na(cityID)) %>%
     pull(cityID) %>%
     stringr::str_replace("C", "") %>%
     as.numeric() %>%
