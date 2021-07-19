@@ -12,6 +12,8 @@ You can install this package by first installing `devtools`, and then using `dev
 devtools::install_github("kaijagahm/ygdpAddSurvey")
 ```
 
+Because this package contains some large data files, installation will take a while. That's normal.
+
 ### Use
 
 There is a script in the [ygdpDB repository](https://github.com/kaijagahm/ygdpDB) called "READONLY_surveyProcessingTemplate.R". This provides a full example workflow for adding a new survey, in this case Survey 13, to the database. A script called "READONLY_checkCompletionScript.R" likewise provides an example workflow for *only* checking completion by comparing AMT and QT files, without simultaneously adding a whole survey to the database.
