@@ -1,6 +1,18 @@
-### README: ygdpAddSurvey package
+## README: ygdpAddSurvey package
+
+### Introduction
 
 This package was written by Kaija for the YGDP. It contains functions that help with the process of adding a new YGDP survey to the existing database. It should be used in conjunction with the contents of the ygdpDB repository.
+
+### Installation
+
+You can install this package by first installing `devtools`, and then using `devtools::install_github()`. Like this:
+```
+#install.packages("devtools") # if you don't already have it installed. Can comment out this line when you're done.
+devtools::install_github("kaijagahm/ygdpAddSurvey")
+```
+
+### Use
 
 There is a script in the [ygdpDB repository](https://github.com/kaijagahm/ygdpDB) called "READONLY_surveyProcessingTemplate.R". This provides a full example workflow for adding a new survey, in this case Survey 13, to the database. A script called "READONLY_checkCompletionScript.R" likewise provides an example workflow for *only* checking completion by comparing AMT and QT files, without simultaneously adding a whole survey to the database.
 
